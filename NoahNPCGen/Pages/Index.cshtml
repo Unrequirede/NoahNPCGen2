@@ -1,0 +1,95 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+
+
+<div>
+    <h1>Noah's 5e Character Generator</h1>
+    <p class="lead">Choose the type of person you want, and we'll give them to you!</p>
+</div>
+
+<!--Dropdowns allowing for user to customize the character genrator utilizing D&D 5e API-->
+<div class="container-fluid bg-light gy-5">
+
+    <form method="POST">
+        <div class="row">
+            <div class="col-3 p-3">
+                <p>Select the character's Name or leave blank for a random one:</p>
+                <input id="nameText" type="text" name="selectName" />
+            </div>
+
+            <div class="col-3 p-3">
+                <p>Select the character's Race:</p>
+                <select id="SelectRace" name="SelectRace">
+                    <option value="Random">Random</option>
+                    @foreach (var race in Model.LoadAPI("races")["results"])
+                    {
+                        <option value="@race["name"]">@race["name"]</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-3 p-3">
+                <p>Select the character's class:</p>
+                <select id="SelectClass" name="SelectClass">
+                    <option value="Random">Random</option>
+                    @foreach (var dndClass in Model.LoadAPI("classes")["results"])
+                    {
+                        <option option value="@dndClass["name"]">@dndClass["name"]</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-3 p-3">
+                <p>Select the character's subclass:</p>
+                <select id="SelectSubClass" name="SelectSubclass">
+                    <option value="Random">Random</option>
+                    @foreach (var subClass in Model.LoadAPI("subclasses")["results"])
+                    {
+                        <option value="@subClass["name"]">@subClass["name"]</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-3 p-3">
+                <p>Select the Character's Level:</p>
+                <select id="SelectLevel" name="SelectLevel">
+                    <option value="0">Random</option>
+                    @{ int index = 0; }
+                    @for (int i = 1; i <= 20; i++)
+                    {
+                        <option value="@index">@i</option>
+                        index++;
+                    }
+                </select>
+            </div>
+
+            <div class="col-3 p-3">
+                <p>Select the Character's background:</p>
+                <select id="SelectBackG" name="SelectBackG">
+                    <option value="Random">Random</option>
+                    @foreach (var backG in Model.LoadAPI("backgrounds")["results"])
+                    {
+                        <option value="@backG["name"]">@backG["name"]</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-3 p-3">
+                <p>Select the Character's Alignment:</p>
+                <select id="SelectAlignment" name="SelectAlignment">
+                    <option value="Random">Random</option>
+                    @foreach (var alignment in Model.LoadAPI("alignments")["results"])
+                    {
+                        <option value="@alignment["name"]">@alignment["name"]</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <input type="submit" id="Submit" value="Create Character" />
+    </form>
+</div>
