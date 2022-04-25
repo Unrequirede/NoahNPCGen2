@@ -6,6 +6,63 @@
     <title>@ViewData["Title"] - NoahNPCGen</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/Tooltip.razor.css" />
+
+    <style>
+        .card-inverse-success {
+     background: rgba(0, 198, 137, 0.2);
+     border: 1px solid #00b67e;
+     color: #009668
+ }
+
+ .container {
+     margin-top: 100px
+ }
+
+ .context-menu-list {
+     box-shadow: none;
+     border: 1px solid #f3f3f3
+ }
+
+ .context-menu-list {
+     position: absolute;
+     display: inline-block;
+     min-width: 13em;
+     max-width: 26em;
+     padding: .25em 0;
+     margin: .3em;
+     font-family: inherit;
+     font-size: inherit;
+     list-style-type: none;
+     background: #fff;
+     border: 1px solid #bebebe;
+     border-radius: .2em;
+     -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, .5);
+     box-shadow: 0 2px 5px rgba(0, 0, 0, .5)
+ }
+
+ .context-menu-item {
+     position: relative;
+     padding: 0.5em 6em;
+     color: #2f2f2f;
+     -webkit-user-select: none;
+     -moz-user-select: none;
+     -ms-user-select: none;
+     user-select: none;
+     background-color: #fff
+ }
+
+ .context-menu-list .context-menu-item.context-menu-hover {
+     background-color: black;
+     color: #fff
+ }
+
+ .context-menu-separator {
+     padding: 0;
+     margin: .35em 0;
+     border-bottom: 1px solid #e6e6e6
+ }
+    </style>
 </head>
 <body>
     <header>
@@ -24,6 +81,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Counter">Counter</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -35,7 +95,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted mt-5">
         <div class="container">
             &copy; 2022 - NoahNPCGen - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
@@ -44,6 +104,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/_framework/blazor.server.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

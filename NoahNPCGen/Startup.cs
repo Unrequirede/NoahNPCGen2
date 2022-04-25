@@ -24,6 +24,8 @@ namespace NoahNPCGen
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            services.AddServerSideBlazor();
+            //services.AddBlazorContextMenu();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +52,8 @@ namespace NoahNPCGen
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapBlazorHub();
+                endpoints.MapFallbackToPage("/_Host");
             });
         }
     }

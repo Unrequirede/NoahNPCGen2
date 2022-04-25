@@ -501,8 +501,13 @@
                 <p class="mt-auto">Flaws</p>
             </div>
             <div class="border">
-                <textarea rows="12" class="m-auto w-100" id="Features" name="Features">@Model.GetFeatures()</textarea>
-                <b>Features and Traits</b>
+                <div class="list-group list-group-flush">
+                    @foreach (string ft in Model.featuresTraits)
+                    {
+                        <button type=button class="list-group-item list-group-item-action py-1">@ft</button>
+                    }
+                    <b>Features and Traits</b>
+                </div>
             </div>
         </div>
     </div>

@@ -23,6 +23,7 @@ namespace NoahNPCGen.Pages
         public string strSav, dexSav, conSav, intSav, wisSav, chaSav, acroPro, animPro, arcaPro, athlPro, decePro, histPro, insiPro, intiPro, invePro,
             mediPro, natuPro, percPro, perfPro, persPro, reliPro, sleiPro, steaPro, survPro, otherPro;
         public string persTrait = "", persIdeal = "", persBonds = "", persFlaws = "", features="";
+        JObject classObject;
         public List<string> otherProf = new List<string>(), featuresTraits = new List<string>();
         public List<string[]> attackList = new List<string[]>();
         public List<DNDItem> itemSelect = new List<DNDItem>();
@@ -50,7 +51,7 @@ namespace NoahNPCGen.Pages
             displayBackG = charBackG;
             displayAlignment = CharAlignment;
             GenerateRand();
-            displayHitDice = (int)LoadAPI("classes/" + displayClass.ToLower())["hit_die"];
+            displayHitDice = (int)classObject["hit_die"];
             GetStats();
             GetProf();
             GetRaceInfo();
@@ -216,10 +217,11 @@ namespace NoahNPCGen.Pages
                     classList.Add(className["name"].ToString());
                 displayClass = classList.ElementAt(QuantumAPI(classList.Count));
             }
+            classObject = LoadJAPI("classes/" + displayClass.ToLower());
             if (displaySubClass == "Random")
             {
                 List<string> subClassList = new List<string>();
-                foreach (dynamic subClassName in LoadAPI("classes/" + displayClass.ToLower())["subclasses"])
+                foreach (dynamic subClassName in classObject["subclasses"])
                     subClassList.Add(subClassName["name"].ToString());
                 displaySubClass = subClassList.ElementAt(QuantumAPI(subClassList.Count));
             }
@@ -252,7 +254,7 @@ namespace NoahNPCGen.Pages
             {
                 result += ft + "\n";
             }
-            return result;
+            return "";
         }
 
         private void AddProficiency(string prof)
@@ -663,7 +665,7 @@ namespace NoahNPCGen.Pages
                 //next assigned to saving throws
                 if (!changed)
                 {
-                    foreach (dynamic savThr in LoadAPI("classes/" + displayClass.ToLower())["saving_throws"])
+                    foreach (dynamic savThr in classObject["saving_throws"])
                         changed = AddScore(savThr["index"].ToString());
                 }
 
@@ -738,7 +740,7 @@ namespace NoahNPCGen.Pages
         //checks API for a class's saving throws and proficiencies, making the ones that are, "checked" for input box
         private void GetProf()
         {
-            dynamic savThr = LoadAPI("classes/" + displayClass.ToLower())["saving_throws"];
+            dynamic savThr = classObject["saving_throws"];
             if ("str" == savThr[0]["index"].ToString() || "str" == savThr[1]["index"].ToString())
                 strSav = "checked";
             if ("dex" == savThr[0]["index"].ToString() || "dex" == savThr[1]["index"].ToString())
@@ -755,7 +757,7 @@ namespace NoahNPCGen.Pages
             var profSele = new List<string>();
             //check if object begins with "skill-" string as the API sorts proficiencies inconsistently
             dynamic correctProf = null;
-            foreach (dynamic profPoss in LoadAPI("classes/" + displayClass.ToLower())["proficiency_choices"])
+            foreach (dynamic profPoss in classObject["proficiency_choices"])
             {
                 if (profPoss["from"][0]["index"].ToString().Substring(0, 6) == "skill-")
                     correctProf = profPoss;
@@ -778,7 +780,7 @@ namespace NoahNPCGen.Pages
             profSele = new List<string>();
             //check if object begins with "skill-" string as the API sorts proficiencies inconsistently
             correctProf = null;
-            foreach (dynamic profPoss in LoadAPI("classes/" + displayClass.ToLower())["proficiency_choices"])
+            foreach (dynamic profPoss in classObject["proficiency_choices"])
             {
                 if (profPoss["from"][0]["index"].ToString().Substring(0, 6) != "skill-")
                 {
@@ -794,7 +796,7 @@ namespace NoahNPCGen.Pages
             }
 
             //adds weapon proficiency as well
-            foreach (dynamic weapProf in LoadAPI("classes/" + displayClass.ToLower())["proficiencies"])
+            foreach (dynamic weapProf in classObject["proficiencies"])
             {
                 otherProf.Add(weapProf["name"].ToString());
             }
@@ -846,9 +848,9 @@ namespace NoahNPCGen.Pages
 
             //next assigned to saving throws
             if (LoadJAPI("classes/" + displayClass.ToLower())["saving_throws"][0] != null)
-                FillStat(LoadAPI("classes/" + displayClass.ToLower())["saving_throws"][0]["index"].ToString(), rolledStats);
+                FillStat(classObject["saving_throws"][0]["index"].ToString(), rolledStats);
             if (LoadJAPI("classes/" + displayClass.ToLower())["saving_throws"][1] != null)
-                FillStat(LoadAPI("classes/" + displayClass.ToLower())["saving_throws"][1]["index"].ToString(), rolledStats);
+                FillStat(classObject["saving_throws"][1]["index"].ToString(), rolledStats);
 
             //rest assigned randomly, as they are usually subject to player preference
             FillStat("str", rolledStats);
@@ -960,6 +962,17 @@ namespace NoahNPCGen.Pages
 
             int result = (int)JObject.Parse(data)["data"][0] % dieSize;
             return result;
+        }
+        public static JObject NameAPI()
+        {
+            WebRequest request = WebRequest.Create("https://api.fungenerators.com/name/categories.json?start=0&limit=5");
+            request.Method = "GET";
+            using var webStream = request.GetResponse().GetResponseStream();
+
+            using var reader = new StreamReader(webStream);
+            var data = reader.ReadToEnd();
+
+            return JObject.Parse(data);
         }
     }
 }

@@ -1,0 +1,7 @@
+﻿@page
+@model CounterModel
+@{
+    ViewData["Title"] = "Counter page";
+}
+
+<component>@(await Html.RenderComponentAsync<Counter>(RenderMode.Server))</component>

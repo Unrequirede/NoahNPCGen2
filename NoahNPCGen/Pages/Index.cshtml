@@ -13,11 +13,11 @@
 
 <!--Dropdowns allowing for user to customize the character genrator utilizing D&D 5e API-->
 <div class="container-fluid bg-light gy-5">
-
+    <h3>Welcome to your new <Tooltip Text="Blazor is awesome!">app</Tooltip>.</h3>
     <form method="POST">
         <div class="row">
             <div class="col-3 p-3">
-                <p>Select the character's Name or leave blank for a random one:</p>
+                    <p>Select the character's Name or leave blank for a random one:</p>
                 <input id="nameText" type="text" name="selectName" />
             </div>
 
@@ -58,11 +58,9 @@
                 <p>Select the Character's Level:</p>
                 <select id="SelectLevel" name="SelectLevel">
                     <option value="0">Random</option>
-                    @{ int index = 0; }
                     @for (int i = 1; i <= 20; i++)
                     {
-                        <option value="@index">@i</option>
-                        index++;
+                        <option value="@i">@i</option>
                     }
                 </select>
             </div>
@@ -92,4 +90,7 @@
 
         <input type="submit" id="Submit" value="Create Character" />
     </form>
+    <SfProgressBar Minimum="0" Maximum="100" Value="50"></SfProgressBar>
 </div>
+
+<component>@(await Html.RenderComponentAsync<Index>(RenderMode.Server))</component>

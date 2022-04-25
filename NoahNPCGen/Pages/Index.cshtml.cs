@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Net;
 using System.IO;
+using Syncfusion.Blazor;
+using Newtonsoft.Json.Linq;
 
 namespace NoahNPCGen.Pages
 {
@@ -21,8 +23,28 @@ namespace NoahNPCGen.Pages
 
             using var reader = new StreamReader(webStream);
             var data = reader.ReadToEnd();
+            Console.WriteLine("HERE IS THE ISSUE: " + NameAPI().ToString());
 
             return JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(data);
+        }
+        public static string NameAPI()
+        {
+            try
+            {
+                WebRequest request = WebRequest.Create("https://api.fungenerators.com/name/categories.json?start=0&limit=5");
+                request.Method = "GET";
+                using var webStream = request.GetResponse().GetResponseStream();
+
+                using var reader = new StreamReader(webStream);
+                var data = reader.ReadToEnd();
+
+                return JObject.Parse(data).ToString();
+            }
+            catch (WebException e)
+            {
+                string pageContent = new StreamReader(e.Response.GetResponseStream()).ReadToEnd().ToString();
+                return pageContent;
+            }
         }
 
         private readonly ILogger<IndexModel> _logger;
