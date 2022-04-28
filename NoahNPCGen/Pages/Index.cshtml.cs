@@ -24,6 +24,8 @@ namespace NoahNPCGen.Pages
             using var reader = new StreamReader(webStream);
             var data = reader.ReadToEnd();
             Console.WriteLine("HERE IS THE ISSUE: " + NameAPI().ToString());
+            for (int i = 0; i < "/api/traits/darkvision".Length; i++)
+                Console.WriteLine("Substring " + i + ": " + "/api/traits/darkvision".Substring(i));
 
             return JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(data);
         }

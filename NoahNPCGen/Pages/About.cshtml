@@ -1,0 +1,19 @@
+﻿@page
+@model AboutModel
+@{
+    ViewData["Title"] = "About Page";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Welcome to D&D 5E Character Generator!</p>
+<p>This website was designed to make character creation easy. Just put in a name and click generate, or if you have an idea in mind but
+    don't know the specifics, put in what you know and let the dice decide the rest. Even if you know exactly what you want, you can
+    skip past the tedius process of rolling stats and looking up abilities dependant on level. Just select what you need and click
+    generate!
+</p>
+
+<p>This website utilizes <a href="https://www.dnd5eapi.co/">D&D 5e API</a> to import all the information from the official Systems
+    Reference Document from Wizards of the Coast, meaning it's all entirely free to use. This project also utilizes
+    <a href="https://qrng.anu.edu.au/">ANU QRNG</a> to generate dice rolls. ANU QRNG generates random numbers using the quantum
+    field. Unlike regular dice rolls, which can be determined by the dice's initial position and the amount of force applied, this
+    random number generator is truly random. The second you press the generate button, it's going to be truly random.</p>

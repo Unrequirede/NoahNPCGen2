@@ -17,7 +17,7 @@
     <form method="POST">
         <div class="row">
             <div class="col-3 p-3">
-                    <p>Select the character's Name or leave blank for a random one:</p>
+                <p>Select the character's Name or wait and name them after they're generated:</p>
                 <input id="nameText" type="text" name="selectName" />
             </div>
 
@@ -93,4 +93,4 @@
     <SfProgressBar Minimum="0" Maximum="100" Value="50"></SfProgressBar>
 </div>
 
-<component>@(await Html.RenderComponentAsync<Index>(RenderMode.Server))</component>
+<!--<component>@*(await Html.RenderComponentAsync<Index>(RenderMode.Server))*@</component>-->

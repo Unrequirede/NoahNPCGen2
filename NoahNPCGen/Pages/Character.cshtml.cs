@@ -9,6 +9,7 @@ using System.Net;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using Kevsoft.PDFtk;
+using System.Text.RegularExpressions;
 
 namespace NoahNPCGen.Pages
 {
@@ -23,10 +24,12 @@ namespace NoahNPCGen.Pages
         public string strSav, dexSav, conSav, intSav, wisSav, chaSav, acroPro, animPro, arcaPro, athlPro, decePro, histPro, insiPro, intiPro, invePro,
             mediPro, natuPro, percPro, perfPro, persPro, reliPro, sleiPro, steaPro, survPro, otherPro;
         public string persTrait = "", persIdeal = "", persBonds = "", persFlaws = "", features="";
-        JObject classObject;
-        public List<string> otherProf = new List<string>(), featuresTraits = new List<string>();
-        public List<string[]> attackList = new List<string[]>();
+        JObject classObject, bgObject, mcObject, scObject;
+        JArray scfObject;
+        public List<string> otherProf = new List<string>();
+        public List<string[]> attackList = new List<string[]>(), featuresTraits = new List<string[]>();
         public List<DNDItem> itemSelect = new List<DNDItem>();
+        public Queue<int> quantumQueue = QuantumAPI();
 
         public class DNDItem
         {
@@ -191,14 +194,9 @@ namespace NoahNPCGen.Pages
             return File(result.Result, "application/pdf", $"{Guid.NewGuid().ToString()}.pdf");
         }
 
-        byte[] GetFile(string s)
+        public string ReplaceIllegal(string input)
         {
-            System.IO.FileStream fs = System.IO.File.OpenRead(s);
-            byte[] data = new byte[fs.Length];
-            int br = fs.Read(data, 0, data.Length);
-            if (br != fs.Length)
-                throw new System.IO.IOException(s);
-            return data;
+            return Regex.Replace(input, @"[^0-9a-zA-Z]+", "");
         }
 
         private void GenerateRand()
@@ -208,53 +206,48 @@ namespace NoahNPCGen.Pages
                 List<string> raceList = new List<string>();
                 foreach (dynamic raceName in LoadAPI("races")["results"])
                     raceList.Add(raceName["name"].ToString());
-                displayRace = raceList.ElementAt(QuantumAPI(raceList.Count));
+                displayRace = raceList.ElementAt(quantumQueue.Dequeue() % raceList.Count);
             }
             if (displayClass == "Random")
             {
                 List<string> classList = new List<string>();
                 foreach (dynamic className in LoadAPI("classes")["results"])
                     classList.Add(className["name"].ToString());
-                displayClass = classList.ElementAt(QuantumAPI(classList.Count));
+                displayClass = classList.ElementAt(quantumQueue.Dequeue() % classList.Count);
             }
             classObject = LoadJAPI("classes/" + displayClass.ToLower());
+            mcObject = LoadJAPI("classes/" + displayClass.ToLower() + "/multi-classing/");
+            if (LoadJAPI("classes/" + displayClass.ToLower())["spellcasting"] != null)
+                scObject = LoadJAPI("classes/" + displayClass.ToLower() + "/spellcasting/");
+            scfObject = LoadArrayAPI("subclasses/" + displaySubClass.ToLower() + "/levels/");
             if (displaySubClass == "Random")
             {
                 List<string> subClassList = new List<string>();
                 foreach (dynamic subClassName in classObject["subclasses"])
                     subClassList.Add(subClassName["name"].ToString());
-                displaySubClass = subClassList.ElementAt(QuantumAPI(subClassList.Count));
+                displaySubClass = subClassList.ElementAt(quantumQueue.Dequeue() % subClassList.Count);
             }
             if (displayBackG == "Random")
             {
                 List<string> backGList = new List<string>();
                 foreach (dynamic backGName in LoadAPI("backgrounds")["results"])
                     backGList.Add(backGName["name"].ToString());
-                displayBackG = backGList.ElementAt(QuantumAPI(backGList.Count));
+                displayBackG = backGList.ElementAt(quantumQueue.Dequeue() % backGList.Count);
+                bgObject = LoadJAPI("backgrounds/" + displayBackG.ToLower());
             }
             if (displayAlignment == "Random")
             {
                 List<string> alignmentList = new List<string>();
                 foreach (dynamic alignmentName in LoadAPI("alignments")["results"])
                     alignmentList.Add(alignmentName["name"].ToString());
-                displayAlignment = alignmentList.ElementAt(QuantumAPI(alignmentList.Count));
+                displayAlignment = alignmentList.ElementAt(quantumQueue.Dequeue() % alignmentList.Count);
             }
             if (displayLevel == 0)
-                displayLevel = QuantumAPI(20);
+                displayLevel = quantumQueue.Dequeue() % 20 + 1;
             if (displayName == "")
             {
                 //load fantasy name API
             }
-        }
-
-        public string GetFeatures()
-        {
-            string result = "";
-            foreach (string ft in featuresTraits)
-            {
-                result += ft + "\n";
-            }
-            return "";
         }
 
         private void AddProficiency(string prof)
@@ -354,19 +347,19 @@ namespace NoahNPCGen.Pages
             foreach (dynamic language in race["languages"])
                 otherProf.Add(language["name"].ToString());
             foreach (dynamic trait in race["traits"])
-                featuresTraits.Add(trait["name"].ToString());
+                featuresTraits.Add( new string[] { trait["name"].ToString(), ArrayToDesc(LoadJAPI(trait["url"].ToString().Substring(5))["desc"]) });
         }
 
         //Generates personality traits based on background and alignment
         private void GetPersonality()
         {
-            dynamic backGround = LoadAPI("backgrounds/" + displayBackG.ToLower());
+            dynamic backGround = bgObject;
             List<string> pTraits = new List<string>();
             foreach(dynamic persTrait in backGround["personality_traits"]["from"])
                 pTraits.Add(persTrait.ToString());
             for (int i = 0; i < (int)backGround["personality_traits"]["choose"]; i++)
             {
-                int ranNum = QuantumAPI(pTraits.Count);
+                int ranNum = quantumQueue.Dequeue() % pTraits.Count;
                 persTrait += pTraits.ElementAt(ranNum) + "\n";
                 pTraits.RemoveAt(ranNum);
             }
@@ -381,7 +374,7 @@ namespace NoahNPCGen.Pages
             }
             for (int i = 0; i < (int)backGround["ideals"]["choose"]; i++)
             {
-                int ranNum = QuantumAPI(pTraits.Count);
+                int ranNum = quantumQueue.Dequeue() % pTraits.Count;
                 persIdeal += pTraits.ElementAt(ranNum) + "\n";
                 pTraits.RemoveAt(ranNum);
             }
@@ -390,7 +383,7 @@ namespace NoahNPCGen.Pages
                 pTraits.Add(bondTrait.ToString());
             for (int i = 0; i < (int)backGround["bonds"]["choose"]; i++)
             {
-                int ranNum = QuantumAPI(pTraits.Count);
+                int ranNum = quantumQueue.Dequeue() % pTraits.Count;
                 persBonds += pTraits.ElementAt(ranNum) + "\n";
                 pTraits.RemoveAt(ranNum);
             }
@@ -399,7 +392,7 @@ namespace NoahNPCGen.Pages
                 pTraits.Add(flawTrait.ToString());
             for (int i = 0; i < (int)backGround["flaws"]["choose"]; i++)
             {
-                int ranNum = QuantumAPI(pTraits.Count);
+                int ranNum = quantumQueue.Dequeue() % pTraits.Count;
                 persFlaws += pTraits.ElementAt(ranNum) + "\n";
                 pTraits.RemoveAt(ranNum);
             }
@@ -492,7 +485,7 @@ namespace NoahNPCGen.Pages
         private void GetEquipment()
         {
             dynamic charaEqu = LoadJAPI("classes/" + displayClass.ToLower());
-            foreach (dynamic item in LoadAPI("backgrounds/" + displayBackG.ToLower())["starting_equipment"])
+            foreach (dynamic item in bgObject["starting_equipment"])
                 itemSelect.Add(new DNDItem(item["equipment"]["index"].ToString(), item["equipment"]["name"].ToString(), (int)item["quantity"]));
             foreach (dynamic item in charaEqu["starting_equipment"])
                 itemSelect.Add(new DNDItem(item["equipment"]["index"].ToString(), item["equipment"]["name"].ToString(), (int)item["quantity"]));
@@ -501,7 +494,7 @@ namespace NoahNPCGen.Pages
                 for (int i = 0; i < (int)option["choose"]; i++)
                 {
                     JArray options = (JArray)option["from"];
-                    int rndChoice = QuantumAPI(options.Count);
+                    int rndChoice = quantumQueue.Dequeue() % options.Count;
                     bool setOfItems = false, itemCategory = false, optionCategory = false;
                     //checks to see if the option is multiple items
                     setOfItems = option["from"][rndChoice]["0"] != null;
@@ -527,7 +520,7 @@ namespace NoahNPCGen.Pages
                                     itemType.Add(item);
                                 for (int j = 0; j < (int)option["choose"]; j++)
                                 {
-                                    int ranItem = QuantumAPI(itemType.Count);
+                                    int ranItem = quantumQueue.Dequeue() % itemType.Count;
                                     itemSelect.Add(new DNDItem(itemType.ElementAt(ranItem)["index"].ToString(), itemType.ElementAt(ranItem)["name"].ToString(), 1));
                                 }
                             }
@@ -539,7 +532,7 @@ namespace NoahNPCGen.Pages
                                 itemType.Add(item);
                             for (int j = 0; j < (int)option["from"][rndChoice]["equipment_option"]["choose"]; j++)
                             {
-                                int ranItem = QuantumAPI(itemType.Count);
+                                int ranItem = quantumQueue.Dequeue() % itemType.Count;
                                 itemSelect.Add(new DNDItem(itemType.ElementAt(ranItem)["index"].ToString(), itemType.ElementAt(ranItem)["name"].ToString(), 1));
                             }
                         }
@@ -571,23 +564,32 @@ namespace NoahNPCGen.Pages
                                         itemType.Add(item);
                                     for (int k = 0; k < (int)option["from"][rndChoice][j.ToString()]["equipment_option"]["choose"]; k++)
                                     {
-                                        int ranItem = QuantumAPI(itemType.Count);
+                                        int ranItem = quantumQueue.Dequeue() % itemType.Count;
                                         itemSelect.Add(new DNDItem(itemType.ElementAt(ranItem)["index"].ToString(), itemType.ElementAt(ranItem)["name"].ToString(), 1));
                                     }
                                 }
-                                j++;
                             }
                             else
                             {
                                 List<dynamic> itemType = new List<dynamic>();
                                 foreach (dynamic item in LoadAPI("equipment-categories/" + option["from"][rndChoice][j.ToString()]["equipment_option"]["from"]["equipment_category"]["index"].ToString())["equipment"])
                                     itemType.Add(item);
+
                                 for (int k = 0; k < (int)option["from"][rndChoice][j.ToString()]["equipment_option"]["choose"]; k++)
                                 {
-                                    int ranItem = QuantumAPI(itemType.Count);
-                                    itemSelect.Add(new DNDItem(itemType.ElementAt(ranItem)["index"].ToString(), itemType.ElementAt(ranItem)["name"].ToString(), 1));
+                                    try
+                                    {
+                                        int ranItem = quantumQueue.Dequeue() % itemType.Count;
+                                        itemSelect.Add(new DNDItem(itemType.ElementAt(ranItem)["index"].ToString(), itemType.ElementAt(ranItem)["name"].ToString(), 1));
+                                        k++;
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Console.WriteLine("There was an error. It was: " + e);
+                                    }
                                 }
                             }
+                            j++;
                         }
                     }
                 }
@@ -611,21 +613,25 @@ namespace NoahNPCGen.Pages
         {
             int[] lvlToExp = { 0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000 };
             displayExp = lvlToExp[displayLevel - 1];
-            displayProf = (int)LoadAPI("classes/" + displayClass.ToLower() + "/levels/" + displayLevel.ToString())["prof_bonus"];
-            featuresTraits.Add(LoadAPI("backgrounds/" + displayBackG.ToLower())["feature"]["name"].ToString());
+            displayProf = (int)LoadJAPI("classes/" + displayClass.ToLower() + "/levels/" + displayLevel.ToString())["prof_bonus"];
+            featuresTraits.Add(new string[] { bgObject["feature"]["name"].ToString(), ArrayToDesc(bgObject["feature"]["desc"]) });
             for (int i = 1; i <= displayLevel; i++) {
                 if (i == 1)
                 {
                     displayHP = displayHitDice + displayConMod;
-                    Console.WriteLine("Base health: " + displayHitDice);
+                    Console.WriteLine("Base health: " + displayHP);
                 }
                 else
                 {
-                    Console.Write("Health: " + displayHitDice + " + " + "1d" + displayHitDice + " + " + displayConMod);
-                    displayHP += QuantumAPI(displayHitDice) + displayConMod + 1;
+                    int newHP = (quantumQueue.Dequeue() % displayHitDice) + displayConMod;
+                    Console.Write("Health: " + displayHP + " + " + "1d" + displayHitDice + "(" + newHP + ") + " + displayConMod);
+                    if (newHP > 1)
+                        displayHP += newHP;
+                    else
+                        displayHP += 1;
                     Console.WriteLine(" = " + displayHP);
                 }
-                foreach (dynamic feature in LoadAPI("classes/" + displayClass.ToLower() + "/levels/" + i.ToString())["features"])
+                foreach (dynamic feature in LoadJAPI("classes/" + displayClass.ToLower() + "/levels/" + i.ToString())["features"])
                 {
                     if (feature["name"] == "Ability Score Improvement")
                     {
@@ -633,15 +639,25 @@ namespace NoahNPCGen.Pages
                         GetAblMod();
                     }
                     else
-                        featuresTraits.Add(feature["name"].ToString());
+                        featuresTraits.Add(new string[] { feature["name"].ToString(), ArrayToDesc(LoadJAPI(feature["url"].ToString().Substring(5))["desc"]) });
                 }
                 List<int> subClassLevels = new List<int>();
-                foreach (dynamic subClassFeature in LoadArrayAPI("subclasses/" + displaySubClass.ToLower() + "/levels/"))
+                foreach (dynamic subClassFeature in scfObject)
                     subClassLevels.Add((int)subClassFeature["level"]);
                 if (subClassLevels.Contains(i))
                     foreach (JObject feature in LoadJAPI("subclasses/" + displaySubClass.ToLower() + "/levels/" + i.ToString())["features"])
-                        featuresTraits.Add(feature["name"].ToString());
+                        featuresTraits.Add(new string[] { feature["name"].ToString(), ArrayToDesc(LoadJAPI(feature["url"].ToString().Substring(5))["desc"]) });
             }
+        }
+
+        private string ArrayToDesc(dynamic ja)
+        {
+            string result = "";
+            foreach (dynamic line in ja)
+            {
+                result += line + "\n";
+            }
+            return result;
         }
 
         private void AblScoImp(int v)
@@ -650,17 +666,17 @@ namespace NoahNPCGen.Pages
             {
                 bool changed = false;
                 //highest stats assigned to multiclass prerequisites as best indicator of important abilities
-                if (LoadJAPI("classes/" + displayClass.ToLower() + "/multi-classing/")["prerequisites"] != null)
-                    foreach (JObject preReq in LoadJAPI("classes/" + displayClass.ToLower() + "/multi-classing/")["prerequisites"])
+                if (mcObject["prerequisites"] != null)
+                    foreach (JObject preReq in mcObject["prerequisites"])
                         changed = AddScore(preReq["ability_score"]["index"].ToString());
                 else
-                    foreach (dynamic preReq in LoadJAPI("classes/" + displayClass.ToLower() + "/multi-classing/")["prerequisite_options"]["from"])
+                    foreach (dynamic preReq in mcObject["prerequisite_options"]["from"])
                         changed = AddScore(preReq["ability_score"]["index"].ToString());
                 if (!changed)
                 {
                     //next highest stat assigned to spellcasting ability modifier (if any)
-                    if (LoadJAPI("classes/" + displayClass.ToLower())["spellcasting"] != null)
-                        changed = AddScore(LoadAPI("classes/" + displayClass.ToLower() + "/spellcasting/")["spellcasting_ability"]["index"].ToString());
+                    if (scObject != null)
+                        changed = AddScore(scObject["spellcasting_ability"]["index"].ToString());
                 }
                 //next assigned to saving throws
                 if (!changed)
@@ -673,7 +689,7 @@ namespace NoahNPCGen.Pages
                 if (!changed)
                 {
                     string[] stats = { "str", "dex", "con", "int", "wis", "con" };
-                    changed = AddScore(stats[QuantumAPI(6)]);
+                    changed = AddScore(stats[quantumQueue.Dequeue() % 6]);
                 }
             }
         }
@@ -729,14 +745,6 @@ namespace NoahNPCGen.Pages
             return false;
         }
 
-        public int LevelUpHP(int die, int mod)
-        {
-            if (die + mod > 1)
-                return die + mod;
-            else
-                return 1;
-        }
-
         //checks API for a class's saving throws and proficiencies, making the ones that are, "checked" for input box
         private void GetProf()
         {
@@ -770,11 +778,11 @@ namespace NoahNPCGen.Pages
             //randomly assigns skill proficiencies as they are usually user prefereence
             for (int i = 0; i < (int)correctProf["choose"]; i++)
             {
-                string chosenProf = profSele.ElementAt(QuantumAPI(profSele.Count));
+                string chosenProf = profSele.ElementAt(quantumQueue.Dequeue() % profSele.Count);
                 AddProficiency(chosenProf);
             }
 
-            foreach (var prof in LoadAPI("backgrounds/" + displayBackG.ToLower())["starting_proficiencies"])
+            foreach (var prof in bgObject["starting_proficiencies"])
                 AddProficiency(prof["index"].ToString());
 
             profSele = new List<string>();
@@ -790,7 +798,7 @@ namespace NoahNPCGen.Pages
                     //randomly assigns tool and instrument proficiencies as they are usually user prefereence
                     for (int i = 0; i < (int)correctProf["choose"]; i++)
                     {
-                        otherProf.Add(profSele.ElementAt(QuantumAPI(profSele.Count)));
+                        otherProf.Add(profSele.ElementAt(quantumQueue.Dequeue() % profSele.Count));
                     }
                 }
             }
@@ -830,16 +838,16 @@ namespace NoahNPCGen.Pages
             int[] rolledStats = new int[6];
             for (int i = 0; i < 6; i++)
             {
-                int[] statRoll = { QuantumAPI(6), QuantumAPI(6), QuantumAPI(6), QuantumAPI(6) };
+                int[] statRoll = { quantumQueue.Dequeue() % 6, quantumQueue.Dequeue() % 6, quantumQueue.Dequeue() % 6, quantumQueue.Dequeue() % 6 };
                 rolledStats[i] = statRoll.Sum() - statRoll.Min();
             }
 
             //highest stats assigned to multiclass prerequisites as best indicator of important abilities
-            if (LoadJAPI("classes/" + displayClass.ToLower() + "/multi-classing/")["prerequisites"] != null)
-                foreach (JObject ability in LoadAPI("classes/" + displayClass.ToLower() + "/multi-classing/")["prerequisites"])
+            if (mcObject["prerequisites"] != null)
+                foreach (JObject ability in mcObject["prerequisites"])
                     FillStat(ability["ability_score"]["index"].ToString(), rolledStats);
-            if (LoadJAPI("classes/" + displayClass.ToLower() + "/multi-classing/")["prerequisite_options"] != null)
-                foreach (JObject ability in LoadAPI("classes/" + displayClass.ToLower() + "/multi-classing/")["prerequisite_options"]["from"])
+            if (mcObject["prerequisite_options"] != null)
+                foreach (JObject ability in mcObject["prerequisite_options"]["from"])
                     FillStat(ability["ability_score"]["index"].ToString(), rolledStats);
 
             //next highest stat assigned to ability modifier (if any)
@@ -951,28 +959,19 @@ namespace NoahNPCGen.Pages
 
             return JArray.Parse(data);
         }
-        public static int QuantumAPI(int dieSize)
+        public static Queue<int> QuantumAPI()
         {
-            WebRequest request = WebRequest.Create("https://qrng.anu.edu.au/API/jsonI.php?length=1&type=uint16&size=0");
+            WebRequest request = WebRequest.Create("https://qrng.anu.edu.au/API/jsonI.php?length=1000&type=uint16&size=0");
             request.Method = "GET";
             using var webStream = request.GetResponse().GetResponseStream();
 
             using var reader = new StreamReader(webStream);
             var data = reader.ReadToEnd();
 
-            int result = (int)JObject.Parse(data)["data"][0] % dieSize;
+            Queue<int> result = new Queue<int>();
+            for (int i = 0; i < 1000; i++)
+                result.Enqueue((int)JObject.Parse(data)["data"][i]);
             return result;
-        }
-        public static JObject NameAPI()
-        {
-            WebRequest request = WebRequest.Create("https://api.fungenerators.com/name/categories.json?start=0&limit=5");
-            request.Method = "GET";
-            using var webStream = request.GetResponse().GetResponseStream();
-
-            using var reader = new StreamReader(webStream);
-            var data = reader.ReadToEnd();
-
-            return JObject.Parse(data);
         }
     }
 }

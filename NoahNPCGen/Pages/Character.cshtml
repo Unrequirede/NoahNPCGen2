@@ -417,10 +417,10 @@
             <div class="row mx-auto">
                 <div class="col-sm-6 border">
                     <div class="row mx-auto">
-                        <p>Total: </p><input class="w-100" name="DieLevel" value="@Model.displayLevel" />
+                        <p class="mb-0">Total: </p><input class="w-100" name="DieLevel" value="@Model.displayLevel" maxlength="4" size="4" width=4 />
                     </div>
                     <div class="row mx-auto">
-                        <p>d</p><input class="w-100" name="HitDie" value="@Model.displayHitDice" />
+                        <p class="mb-0">d</p><input class="w-50" name="HitDie" value="@Model.displayHitDice" />
                     </div>
                     <div class="row mx-auto">
                         <p><b>Hit Dice</b></p>
@@ -502,15 +502,37 @@
             </div>
             <div class="border">
                 <div class="list-group list-group-flush">
-                    @foreach (string ft in Model.featuresTraits)
+                    @foreach (string[] ft in Model.featuresTraits)
                     {
-                        <button type=button class="list-group-item list-group-item-action py-1">@ft</button>
+                        <button type=button data-toggle="modal" data-target="#@Model.ReplaceIllegal(ft[0])" class="list-group-item list-group-item-action btn py-1">@ft[0]</button>
                     }
-                    <b>Features and Traits</b>
                 </div>
+                    <b>Features and Traits</b>
             </div>
         </div>
     </div>
 
     <button type="submit" id="Submit">Export to PDF</button>
 </form>
+
+@foreach (string[] ft in Model.featuresTraits)
+{
+<div class="modal fade" id="@Model.ReplaceIllegal(ft[0])" tabindex="-1" role="dialog" aria-labelledby="featureModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="featureModalLabel">@ft[0]</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          @ft[1]
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+}
