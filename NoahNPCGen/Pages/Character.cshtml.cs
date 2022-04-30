@@ -233,8 +233,8 @@ namespace NoahNPCGen.Pages
                 foreach (dynamic backGName in LoadAPI("backgrounds")["results"])
                     backGList.Add(backGName["name"].ToString());
                 displayBackG = backGList.ElementAt(quantumQueue.Dequeue() % backGList.Count);
-                bgObject = LoadJAPI("backgrounds/" + displayBackG.ToLower());
             }
+            bgObject = LoadJAPI("backgrounds/" + displayBackG.ToLower());
             if (displayAlignment == "Random")
             {
                 List<string> alignmentList = new List<string>();
