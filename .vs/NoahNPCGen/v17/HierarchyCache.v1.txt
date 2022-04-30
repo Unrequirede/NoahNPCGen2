@@ -3,65 +3,32 @@ i:{00000000-0000-0000-0000-000000000000}:NoahNPCGen.sln
 ++NoahNPCGen
 i:{00000000-0000-0000-0000-000000000000}:NoahNPCGen
 ++Connected Services 
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>906
-++SQL Server Database (NNPCGenConnection)
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>927
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>950
 ++Dependencies
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>905
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>949
 ++Analyzers
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:analyzers
-++Microsoft.AspNetCore.Analyzers
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\program files\dotnet\sdk\6.0.202\sdks\microsoft.net.sdk.web\analyzers\cs\microsoft.aspnetcore.analyzers.dll
-++Microsoft.AspNetCore.Components.Analyzers
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\program files\dotnet\sdk\6.0.202\sdks\microsoft.net.sdk.web\analyzers\cs\microsoft.aspnetcore.components.analyzers.dll
-++Microsoft.AspNetCore.Mvc.Analyzers
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\program files\dotnet\sdk\6.0.202\sdks\microsoft.net.sdk.web\analyzers\cs\microsoft.aspnetcore.mvc.analyzers.dll
-++Microsoft.EntityFrameworkCore.Analyzers
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\.nuget\packages\microsoft.entityframeworkcore.analyzers\3.1.3\analyzers\dotnet\cs\microsoft.entityframeworkcore.analyzers.dll
-++System.Text.Json.SourceGeneration
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\.nuget\packages\system.text.json\6.0.0\analyzers\dotnet\roslyn4.0\cs\system.text.json.sourcegeneration.dll
 ++Frameworks
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:frameworks
-++Microsoft.AspNetCore.App
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\microsoft.aspnetcore.app
-++Microsoft.NETCore.App
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\microsoft.netcore.app
 ++Packages
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:packages
 ++Blazor.ContextMenu (1.13.0)
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>943
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>968
 ++Kevsoft.PDFtk (0.0.51)
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>919
 ++Microsoft.AspNet.WebApi (5.2.7)
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>917
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>963
 ++Microsoft.EntityFrameworkCore.SqlServer (3.1.3)
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>918
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>964
 ++Microsoft.EntityFrameworkCore.Tools (3.1.3)
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>921
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>967
 ++pdftk.exe (1.44.0)
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>920
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>966
+++Syncfusion.Blazor (20.1.0.50)
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>969
 ++Syncfusion.Blazor.ProgressBar (20.1.0.50)
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>916
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>962
 ++Properties
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\
-++PublishProfiles
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\publishprofiles\
-++NoahsNPCGen - Web Deploy.pubxml
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\publishprofiles\noahsnpcgen - web deploy.pubxml
-++ServiceDependencies
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\servicedependencies\
-++NoahsNPCGen - Web Deploy
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\servicedependencies\noahsnpcgen - web deploy\
-++mssql1.arm.json
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\servicedependencies\noahsnpcgen - web deploy\mssql1.arm.json
-++profile.arm.json
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\servicedependencies\noahsnpcgen - web deploy\profile.arm.json
-++launchSettings.json
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\launchsettings.json
-++serviceDependencies.json
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\servicedependencies.json
-++serviceDependencies.NoahsNPCGen - Web Deploy.json
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\servicedependencies.noahsnpcgen - web deploy.json
 ++wwwroot
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\
 ++css
@@ -71,8 +38,8 @@ i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\css\site.css
 ++Tooltip.razor.css
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\css\tooltip.razor.css
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\shared\components\tooltip.razor.css
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\tooltip.razor.css
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\shared\components\tooltip.razor.css
 ++js
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\js\
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\lib\bootstrap\dist\js\
@@ -80,6 +47,14 @@ i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\js\site.js
 ++lib
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\lib\
+++bootstrap
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\lib\bootstrap\
+++jquery
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\lib\jquery\
+++jquery-validation
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\lib\jquery-validation\
+++jquery-validation-unobtrusive
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\lib\jquery-validation-unobtrusive\
 ++favicon.ico
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\favicon.ico
 ++Tooltip.razor
@@ -95,24 +70,38 @@ i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\shared\_layout.cshtml
 ++_ValidationScriptsPartial.cshtml
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\shared\_validationscriptspartial.cshtml
+++_Host.cshtml
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\_host.cshtml
+++_Host.cshtml.cs
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\_host.cshtml.cs
+++_imports.razor
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\_imports.razor
 ++_ViewImports.cshtml
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\_viewimports.cshtml
 ++_ViewStart.cshtml
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\_viewstart.cshtml
+++About.cshtml
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\about.cshtml
+++About.cshtml.cs
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\about.cshtml.cs
+++App.razor
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\app.razor
 ++Character.cshtml
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\character.cshtml
-++Character.cshtml.cs
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\character.cshtml.cs
+++Counter.cshtml
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\counter.cshtml
+++Counter.cshtml.cs
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\counter.cshtml.cs
+++Counter.razor
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\counter.razor
 ++Error.cshtml
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\error.cshtml
 ++Index.cshtml
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\index.cshtml
 ++Index.cshtml.cs
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\index.cshtml.cs
-++Privacy.cshtml
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\privacy.cshtml
-++Test.cshtml
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\test.cshtml
+++Index.razor
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\index.razor
 ++.gitignore
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\.gitignore
 ++appsettings.json
@@ -127,36 +116,40 @@ i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\info.txt
 ++libman.json
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\libman.json
-++pixel-perfect.pdf
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pixel-perfect.pdf
 ++Program.cs
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\program.cs
-++something
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\something
 ++Startup.cs
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\startup.cs
 ++ValuesController.cs
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\valuescontroller.cs
-++wiki.pdf
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wiki.pdf
-++Dependency mssql1 is missing and needs to be configured for current profile.
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>928
-++bootstrap
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\lib\bootstrap\
-++jquery
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\lib\jquery\
-++jquery-validation
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\lib\jquery-validation\
-++jquery-validation-unobtrusive
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\lib\jquery-validation-unobtrusive\
-++Error.cshtml.cs
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\error.cshtml.cs
-++Privacy.cshtml.cs
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\privacy.cshtml.cs
-++Test.cshtml.cs
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\test.cshtml.cs
-++appsettings.Development.json
-i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\appsettings.development.json
+++SQL Server Database (NNPCGenConnection)
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>970
+++Microsoft.AspNetCore.Analyzers
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\program files\dotnet\sdk\6.0.202\sdks\microsoft.net.sdk.web\analyzers\cs\microsoft.aspnetcore.analyzers.dll
+++Microsoft.AspNetCore.Components.Analyzers
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\program files\dotnet\sdk\6.0.202\sdks\microsoft.net.sdk.web\analyzers\cs\microsoft.aspnetcore.components.analyzers.dll
+++Microsoft.AspNetCore.Mvc.Analyzers
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\program files\dotnet\sdk\6.0.202\sdks\microsoft.net.sdk.web\analyzers\cs\microsoft.aspnetcore.mvc.analyzers.dll
+++Microsoft.EntityFrameworkCore.Analyzers
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\.nuget\packages\microsoft.entityframeworkcore.analyzers\3.1.3\analyzers\dotnet\cs\microsoft.entityframeworkcore.analyzers.dll
+++System.Text.Json.SourceGeneration
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\.nuget\packages\system.text.json\6.0.0\analyzers\dotnet\roslyn4.0\cs\system.text.json.sourcegeneration.dll
+++Microsoft.AspNetCore.App
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\microsoft.aspnetcore.app
+++Microsoft.NETCore.App
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\microsoft.netcore.app
+++PublishProfiles
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\publishprofiles\
+++ServiceDependencies
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\servicedependencies\
+++NoahNPCGen - Web Deploy
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\servicedependencies\noahnpcgen - web deploy\
+++NoahsNPCGen - Web Deploy
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\servicedependencies\noahsnpcgen - web deploy\
+++launchSettings.json
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\launchsettings.json
+++serviceDependencies.json
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\servicedependencies.json
 ++dist
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\lib\bootstrap\dist\
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\lib\jquery\dist\
@@ -170,6 +163,24 @@ i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\lib\jquery-validation\license.md
 ++jquery.validate.unobtrusive.js
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js
+++Character.cshtml.cs
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\character.cshtml.cs
+++Error.cshtml.cs
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\pages\error.cshtml.cs
+++appsettings.Development.json
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\appsettings.development.json
+++Dependency mssql1 is missing and needs to be configured for current profile.
+++NoahNPCGen - Web Deploy.pubxml
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\publishprofiles\noahnpcgen - web deploy.pubxml
+++NoahsNPCGen - Web Deploy.pubxml
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\publishprofiles\noahsnpcgen - web deploy.pubxml
+++profile.arm.json
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\servicedependencies\noahnpcgen - web deploy\profile.arm.json
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\servicedependencies\noahsnpcgen - web deploy\profile.arm.json
+++mssql1.arm.json
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\servicedependencies\noahsnpcgen - web deploy\mssql1.arm.json
+++serviceDependencies.NoahsNPCGen - Web Deploy.json
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\properties\servicedependencies.noahsnpcgen - web deploy.json
 ++jquery.js
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\lib\jquery\dist\jquery.js
 ++additional-methods.js
@@ -226,3 +237,10 @@ i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
 ++bootstrap.bundle.min.js.map
 i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:c:\users\apple\source\repos\noahnpcgen2\noahnpcgen\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
+++SignalR
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>1962
+++Your application is making use of SignalR. For environments that need to scale we strongly recommend adding a dependency on Azure SignalR Service.
+i:{d1b80475-3d74-44aa-b96c-b82ae4fc8d5f}:>1963
+++Projects
+++Kevsoft.PDFtk
+++0.0

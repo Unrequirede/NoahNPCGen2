@@ -22,4 +22,6 @@
     <PackageReference Include="Syncfusion.Blazor.ProgressBar" Version="20.1.0.50" />
   </ItemGroup>
 
+	
+	
 </Project>
