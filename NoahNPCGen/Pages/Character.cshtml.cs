@@ -27,40 +27,27 @@ namespace NoahNPCGen.Pages
         public List<DNDItem> itemSelect = new List<DNDItem>();
         public static Checkbox ch = new Checkbox();
         public static LoadAPI load = new LoadAPI();
-        public static Generate gr = new Generate();
+        public static Generate gen = new Generate();
         public static Proficiencies prof = new Proficiencies();
+        public static Items items = new Items();
         public List<Checkbox> profChecks = ch.AbilityProf();
         public List<Checkbox> saveChecks = ch.SavingThro();
-        public List<int> ablMods;
+        public List<int> ablMods = new List<int>() { 0, 0, 0, 0, 0, 0 };
         public Queue<int> quantumQueue = load.LoadQuan();
-
-        public class DNDItem
-        {
-            public string Index { get; set; }
-            public string Name { get; set; }
-            public int Quantity { get; set; }
-            public DNDItem(string index, string name, int quantity)
-            {
-                Index = index;
-                Name = name;
-                Quantity = quantity;
-            }
-        }
 
         public void OnGetSingleOrder(string charName, string charRace, string charClass, string charSubClass, int charLevel, string charBackG, string charAlignment)
         {
             displayLevel = charLevel;
-            coreAttr = new Dictionary<string, string>() { { "displayName", charName }, { "displayRace", charRace }, { "displayClass", charClass }, { "displaySubClass", charSubClass }, { "displayBackG", charBackG }, { "displayAlignment", charAlignment }, };
-            gr.RandomAttr(ref coreAttr, ref displayLevel, ref classObject, ref mcObject, ref scObject, ref scfObject, ref bgObject);
+            coreAttr = new Dictionary<string, string>() { { "displayName", charName }, { "displayRace", charRace }, { "displayClass", charClass }, { "displaySubClass", charSubClass }, { "displayBackG", charBackG }, { "displayAlignment", charAlignment } };
+            gen.RandomAttr(ref coreAttr, ref displayLevel, ref classObject, ref mcObject, ref scObject, ref scfObject, ref bgObject);
             displayHitDice = (int)classObject["hit_die"];
-            gr.GetStats(ref coreAttr, mcObject, classObject, ref displayStr, ref displayDex, ref displayCon, ref displayInt, ref displayWis, ref displayCha);
+            gen.GetStats(ref coreAttr, mcObject, classObject, ref displayStr, ref displayDex, ref displayCon, ref displayInt, ref displayWis, ref displayCha);
             prof.GetProf(classObject, bgObject, ref saveChecks, ref profChecks, ref otherProf);
-            GetRaceInfo();
-            ablMods = new List<int> {};
+            gen.GetRaceInfo(coreAttr, ref profChecks, ref otherProf, ref featuresTraits, ref displaySpeed, ref displayStr, ref displayDex, ref displayCon, ref displayInt, ref displayWis, ref displayCha);
             GetAblMod();
             GetLevelInfo();
-            GetEquipment();
-            GetCombat();
+            items.GetEquipment(coreAttr, bgObject, ref itemSelect);
+            items.GetCombat(itemSelect, otherProf, displayProf, coreAttr, displayLevel, ablMods, ref attackList, ref displayAC, ref displaySpeed, displayStr);
             GetPersonality();
             otherPro = prof.GetOtherProf(otherProf);
             
@@ -191,112 +178,12 @@ namespace NoahNPCGen.Pages
             if (!result.Success)
                 throw new Exception($"Oops: {result.StandardError}");
 
-            return File(result.Result, "application/pdf", $"{Guid.NewGuid().ToString()}.pdf");
+            return File(result.Result, "application/pdf", $"{nameBox}.pdf");
         }
 
         public string ReplaceIllegal(string input)
         {
             return Regex.Replace(input, @"[^0-9a-zA-Z]+", "");
-        }
-
-        private void AddProficiency(string prof)
-        {
-
-            switch (prof)
-            {
-                case "skill-acrobatics":
-                    profChecks.ElementAt(0).Check = true;
-                    break;
-                case "skill-animal-handling":
-                    profChecks.ElementAt(1).Check = true;
-                    break;
-                case "skill-arcana":
-                    profChecks.ElementAt(2).Check = true;
-                    break;
-                case "skill-athletics":
-                    profChecks.ElementAt(3).Check = true;
-                    break;
-                case "skill-deception":
-                    profChecks.ElementAt(4).Check = true;
-                    break;
-                case "skill-history":
-                    profChecks.ElementAt(5).Check = true;
-                    break;
-                case "skill-insight":
-                    profChecks.ElementAt(6).Check = true;
-                    break;
-                case "skill-intimidation":
-                    profChecks.ElementAt(7).Check = true;
-                    break;
-                case "skill-investigation":
-                    profChecks.ElementAt(8).Check = true;
-                    break;
-                case "skill-medicine":
-                    profChecks.ElementAt(9).Check = true;
-                    break;
-                case "skill-nature":
-                    profChecks.ElementAt(10).Check = true;
-                    break;
-                case "skill-perception":
-                    profChecks.ElementAt(11).Check = true;
-                    break;
-                case "skill-performance":
-                    profChecks.ElementAt(12).Check = true;
-                    break;
-                case "skill-persuasion":
-                    profChecks.ElementAt(13).Check = true;
-                    break;
-                case "skill-religion":
-                    profChecks.ElementAt(14).Check = true;
-                    break;
-                case "skill-sleight-of-hand":
-                    profChecks.ElementAt(15).Check = true;
-                    break;
-                case "skill-stealth":
-                    profChecks.ElementAt(16).Check = true;
-                    break;
-                case "skill-survival":
-                    profChecks.ElementAt(17).Check = true;
-                    break;
-            }
-        }
-
-        //fills sheet with info from the character's D&D race
-        private void GetRaceInfo()
-        {
-            dynamic race = load.LoadJObj("races/" + coreAttr["displayRace"].ToLower());
-            displaySpeed = (int)race["speed"];
-            foreach (dynamic bonus in race["ability_bonuses"])
-                switch (bonus["ability_score"]["index"].ToString())
-                {
-                    case "str":
-                        displayStr += (int)bonus["bonus"];
-                        break;
-                    case "dex":
-                        displayStr += (int)bonus["bonus"];
-                        break;
-                    case "con":
-                        displayStr += (int)bonus["bonus"];
-                        break;
-                    case "int":
-                        displayStr += (int)bonus["bonus"];
-                        break;
-                    case "wis":
-                        displayStr += (int)bonus["bonus"];
-                        break;
-                    case "cha":
-                        displayStr += (int)bonus["bonus"];
-                        break;
-                    default:
-                        Console.WriteLine("Something went wrong!");
-                        break;
-                }
-            foreach (dynamic proficiency in race["starting_proficiencies"])
-                AddProficiency(proficiency["index"].ToString());
-            foreach (dynamic language in race["languages"])
-                otherProf.Add(language["name"].ToString());
-            foreach (dynamic trait in race["traits"])
-                featuresTraits.Add( new string[] { trait["name"].ToString(), ArrayToDesc(load.LoadJObj(trait["url"].ToString().Substring(5))["desc"]) });
         }
 
         //Generates personality traits based on background and alignment
@@ -344,205 +231,6 @@ namespace NoahNPCGen.Pages
                 int ranNum = quantumQueue.Dequeue() % pTraits.Count;
                 persFlaws += pTraits.ElementAt(ranNum) + "\n";
                 pTraits.RemoveAt(ranNum);
-            }
-        }
-
-        //calculates weapon names, attack bonuses, and damage/type, as well as AC
-        private void GetCombat()
-        {
-            foreach (DNDItem item in itemSelect)
-            {
-                JObject middleMan = load.LoadJObj("equipment/" + item.Index);
-                if ("weapon" == middleMan["equipment_category"]["index"].ToString())
-                {
-                    int atkBonus = 0;
-                    string atkDam = "";
-                    string damType = "";
-                    if (middleMan["damage"]["damage_type"]["name"] != null)
-                        damType = middleMan["damage"]["damage_type"]["name"].ToString();
-                    else
-                        break;
-                    bool isFinesse = false, isMonk = false;
-                    foreach (string proficiency in otherProf)
-                    {
-                        if (proficiency == middleMan["weapon_category"].ToString() + " Weapons" || proficiency.ToLower() == middleMan["index"].ToString() + "s")
-                        {
-                            atkBonus += displayProf;
-                        }
-                    }
-                    foreach (dynamic property in middleMan["properties"])
-                    {
-                        if (property["index"] == "finesse")
-                            isFinesse = true;
-                        if (property["index"] == "monk" && coreAttr["displayClass"] == "Monk")
-                            isMonk = true;
-                    }
-                    if (isMonk)
-                    {
-                        int martArtDie = int.Parse(load.LoadJObj("classes/" + coreAttr["displayClass"].ToLower() + " / levels/" + displayLevel)["class_specific"]["martial_arts"]["dice_value"].ToString());
-                        if (int.Parse(middleMan["damage"]["damage_dice"].ToString().Split('d')[1]) < martArtDie)
-                            atkDam = "1d" + martArtDie;
-                        else
-                            atkDam = middleMan["damage"]["damage_dice"].ToString();
-                    }
-                    else
-                        atkDam = middleMan["damage"]["damage_dice"].ToString();
-                    //if weapon can use dexterity and dex ability modifier is greater than strength
-                    if ((isFinesse || coreAttr["displayClass"] == "Monk") && (ablMods.ElementAt(1) > ablMods.ElementAt(0)))
-                    {
-                        atkBonus += ablMods.ElementAt(1); //add dex to attack bonus
-                        atkDam += " + " + ablMods.ElementAt(1); //add dex to damage
-                    }
-                    else
-                    {
-                        atkBonus += ablMods.ElementAt(0); //add str to attack bonus
-                        atkDam += " + " + ablMods.ElementAt(0); //add str to damage
-                    }
-                    string[] atk = { item.Name, atkBonus.ToString(), atkDam + " " + damType};
-                    attackList.Add(atk);
-                }
-
-                if ("armor" == middleMan["equipment_category"]["index"].ToString() && "shield" != middleMan["index"].ToString())
-                {
-                    displayAC = (int)middleMan["armor_class"]["base"];
-                    if ((bool)middleMan["armor_class"]["dex_bonus"])
-                    {
-                        int dexMax = 99;
-                        if (middleMan["armor_class"]["max_bonus"] != null)
-                            dexMax = (int)middleMan["armor_class"]["max_bonus"];
-                        if (dexMax < ablMods.ElementAt(1)) //if armor class has an maximum dex bonus that is less than dex mod
-                            displayAC += (int)middleMan["armor_class"]["max_bonus"];
-                        else
-                            displayAC += ablMods.ElementAt(1); //add dex to AC
-                    }
-                    if (displayStr < (int)middleMan["str_minimum"])
-                    {
-                        displaySpeed -= 10;
-                    }
-                }
-                if (load.LoadJObj("classes/" + coreAttr["displayClass"].ToLower() + "/levels/1/features/")["results"][0]["index"].ToString() == "barbarian-unarmored-defense")
-                    displayAC = 10 + ablMods.ElementAt(1) + ablMods.ElementAt(2); // Armor class = Dex + Con
-                if (load.LoadJObj("classes/" + coreAttr["displayClass"].ToLower() + "/levels/1/features/")["results"][1]["index"].ToString() == "monk-unarmored-defense")
-                    displayAC = 10 + ablMods.ElementAt(1) + ablMods.ElementAt(3); // Armor class = Dex + Wis
-                if (displayAC == -1)
-                {
-                   displayAC = 10 + ablMods.ElementAt(1);
-                }
-            }
-        }
-
-        //generates character equipment from starting-equipment from class
-        private void GetEquipment()
-        {
-            dynamic charaEqu = load.LoadJObj("classes/" + coreAttr["displayClass"].ToLower());
-            foreach (dynamic item in bgObject["starting_equipment"])
-                itemSelect.Add(new DNDItem(item["equipment"]["index"].ToString(), item["equipment"]["name"].ToString(), (int)item["quantity"]));
-            foreach (dynamic item in charaEqu["starting_equipment"])
-                itemSelect.Add(new DNDItem(item["equipment"]["index"].ToString(), item["equipment"]["name"].ToString(), (int)item["quantity"]));
-            foreach (JObject option in charaEqu["starting_equipment_options"]) //cycles through each choice the player makes
-            {
-                for (int i = 0; i < (int)option["choose"]; i++)
-                {
-                    JArray options = (JArray)option["from"];
-                    int rndChoice = quantumQueue.Dequeue() % options.Count;
-                    bool setOfItems = false, itemCategory = false, optionCategory = false;
-                    //checks to see if the option is multiple items
-                    setOfItems = option["from"][rndChoice]["0"] != null;
-                    if (!setOfItems)
-                    {
-                        //checks to see if item in option is an option of a category such as "simple weapon" or "martial weapon"
-                        optionCategory = option["from"][rndChoice]["equipment_option"] != null;
-                        if (!optionCategory)
-                        {
-                            //checks to see if option itself is of a category such as holy symbol
-                            itemCategory = option["from"][rndChoice]["equipment_category"] != null;
-                            if (!itemCategory)
-                            {
-                                string index = option["from"][rndChoice]["equipment"]["index"].ToString();
-                                string name = option["from"][rndChoice]["equipment"]["name"].ToString();
-                                int quantity = (int)option["from"][rndChoice]["quantity"];
-                                itemSelect.Add(new DNDItem(index, name, quantity));
-                            }
-                            else
-                            {
-                                List<dynamic> itemType = new List<dynamic>();
-                                foreach (dynamic item in load.LoadJObj("equipment-categories/" + option["from"][rndChoice]["equipment_category"]["index"].ToString())["equipment"])
-                                    itemType.Add(item);
-                                for (int j = 0; j < (int)option["choose"]; j++)
-                                {
-                                    int ranItem = quantumQueue.Dequeue() % itemType.Count;
-                                    itemSelect.Add(new DNDItem(itemType.ElementAt(ranItem)["index"].ToString(), itemType.ElementAt(ranItem)["name"].ToString(), 1));
-                                }
-                            }
-                        }
-                        else
-                        {
-                            List<dynamic> itemType = new List<dynamic>();
-                            foreach (dynamic item in load.LoadJObj("equipment-categories/" + option["from"][rndChoice]["equipment_option"]["from"]["equipment_category"]["index"].ToString())["equipment"])
-                                itemType.Add(item);
-                            for (int j = 0; j < (int)option["from"][rndChoice]["equipment_option"]["choose"]; j++)
-                            {
-                                int ranItem = quantumQueue.Dequeue() % itemType.Count;
-                                itemSelect.Add(new DNDItem(itemType.ElementAt(ranItem)["index"].ToString(), itemType.ElementAt(ranItem)["name"].ToString(), 1));
-                            }
-                        }
-
-                    }
-                    else
-                    {
-                        int j = 0;
-
-                        while (option["from"][rndChoice][j.ToString()] != null)
-                        {
-                            //checks to see if item in option is an option of a category such as "simple weapon" or "martial weapon"
-                            optionCategory = option["from"][rndChoice][j.ToString()]["equipment_option"] != null;
-                            if (!optionCategory)
-                            {
-                                //checks to see if option itself is of a category such as holy symbol
-                                itemCategory = option["from"][rndChoice]["equipment_category"] != null;
-                                if (!itemCategory)
-                                {
-                                    string index = option["from"][rndChoice][j.ToString()]["equipment"]["index"].ToString();
-                                    string name = option["from"][rndChoice][j.ToString()]["equipment"]["name"].ToString();
-                                    int quantity = (int)option["from"][rndChoice][j.ToString()]["quantity"];
-                                    itemSelect.Add(new DNDItem(index, name, quantity));
-                                }
-                                else
-                                {
-                                    List<dynamic> itemType = new List<dynamic>();
-                                    foreach (dynamic item in load.LoadJObj("equipment-categories/" + option["from"][rndChoice][j.ToString()]["equipment_option"]["from"]["equipment_category"]["index"].ToString())["equipment"])
-                                        itemType.Add(item);
-                                    for (int k = 0; k < (int)option["from"][rndChoice][j.ToString()]["equipment_option"]["choose"]; k++)
-                                    {
-                                        int ranItem = quantumQueue.Dequeue() % itemType.Count;
-                                        itemSelect.Add(new DNDItem(itemType.ElementAt(ranItem)["index"].ToString(), itemType.ElementAt(ranItem)["name"].ToString(), 1));
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                List<dynamic> itemType = new List<dynamic>();
-                                foreach (dynamic item in load.LoadJObj("equipment-categories/" + option["from"][rndChoice][j.ToString()]["equipment_option"]["from"]["equipment_category"]["index"].ToString())["equipment"])
-                                    itemType.Add(item);
-
-                                for (int k = 0; k < (int)option["from"][rndChoice][j.ToString()]["equipment_option"]["choose"]; k++)
-                                {
-                                    try
-                                    {
-                                        int ranItem = quantumQueue.Dequeue() % itemType.Count;
-                                        itemSelect.Add(new DNDItem(itemType.ElementAt(ranItem)["index"].ToString(), itemType.ElementAt(ranItem)["name"].ToString(), 1));
-                                        k++;
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Console.WriteLine("There was an error. It was: " + e);
-                                    }
-                                }
-                            }
-                            j++;
-                        }
-                    }
-                }
             }
         }
 
@@ -719,12 +407,12 @@ namespace NoahNPCGen.Pages
                 else
                     abls[i,1] = (abls[i, 0] - 11) / 2;
             }
-            ablMods.Add(abls[0, 1]);
-            ablMods.Add(abls[1, 1]);
-            ablMods.Add(abls[2, 1]);
-            ablMods.Add(abls[3, 1]);
-            ablMods.Add(abls[4, 1]);
-            ablMods.Add(abls[5, 1]);
+            ablMods[0] = abls[0, 1];
+            ablMods[1] = abls[1, 1];
+            ablMods[2] = abls[2, 1];
+            ablMods[3] = abls[3, 1];
+            ablMods[4] = abls[4, 1];
+            ablMods[5] = abls[5, 1];
 
         }
     }

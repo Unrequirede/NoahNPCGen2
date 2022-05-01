@@ -77,7 +77,7 @@ namespace NoahNPCGen
             return result.Substring(0, result.Length - 2);
         }
 
-        private void AddProficiency(string prof, List<Checkbox> profChks)
+        public void AddProficiency(string prof, List<Checkbox> profChks)
         {
             switch (prof)
             {

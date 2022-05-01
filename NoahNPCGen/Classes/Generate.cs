@@ -127,5 +127,51 @@ namespace NoahNPCGen
                 statArr[statArr.ToList().IndexOf(displayCha)] = 0;
             }
         }
+
+        //fills sheet with info from the character's D&D race
+        public void GetRaceInfo(Dictionary<string, string> coreAttr, ref List<Checkbox> profChecks, ref List<string> otherProf, ref List<string[]> featuresTraits, ref int displaySpeed, ref int streng, ref int dexter, ref int consti, ref int intell, ref int wisdom, ref int charis)
+        {
+            Proficiencies prof = new Proficiencies();
+            dynamic race = load.LoadJObj("races/" + coreAttr["displayRace"].ToLower());
+            displaySpeed = (int)race["speed"];
+            foreach (dynamic bonus in race["ability_bonuses"])
+                switch (bonus["ability_score"]["index"].ToString())
+                {
+                    case "str":
+                        streng += (int)bonus["bonus"];
+                        break;
+                    case "dex":
+                        dexter += (int)bonus["bonus"];
+                        break;
+                    case "con":
+                        consti += (int)bonus["bonus"];
+                        break;
+                    case "int":
+                        intell += (int)bonus["bonus"];
+                        break;
+                    case "wis":
+                        wisdom += (int)bonus["bonus"];
+                        break;
+                    case "cha":
+                        charis += (int)bonus["bonus"];
+                        break;
+                }
+            foreach (dynamic proficiency in race["starting_proficiencies"])
+                prof.AddProficiency(proficiency["index"].ToString(), profChecks);
+            foreach (dynamic language in race["languages"])
+                otherProf.Add(language["name"].ToString());
+            foreach (dynamic trait in race["traits"])
+                featuresTraits.Add(new string[] { trait["name"].ToString(), ArrayToDesc(load.LoadJObj(trait["url"].ToString().Substring(5))["desc"]) });
+        }
+
+        private string ArrayToDesc(dynamic ja)
+        {
+            string result = "";
+            foreach (dynamic line in ja)
+            {
+                result += line + "\n";
+            }
+            return result;
+        }
     }
 }
