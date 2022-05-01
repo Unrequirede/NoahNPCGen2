@@ -1,7 +1,0 @@
-﻿<StaticWebAssets Version="1.0">
-  <ContentRoot BasePath="_content/Blazor.ContextMenu" Path="C:\Users\apple\.nuget\packages\blazor.contextmenu\1.13.0\build\..\staticwebassets\" />
-  <ContentRoot BasePath="_content/Syncfusion.Blazor" Path="C:\Users\apple\.nuget\packages\syncfusion.blazor\20.1.0.50\build\..\staticwebassets\" />
-  <ContentRoot BasePath="_content/Syncfusion.Blazor.Core" Path="C:\Users\apple\.nuget\packages\syncfusion.blazor.core\20.1.0.50\build\..\staticwebassets\" />
-  <ContentRoot BasePath="_content/Syncfusion.Blazor.Data" Path="C:\Users\apple\.nuget\packages\syncfusion.blazor.data\20.1.0.50\build\..\staticwebassets\" />
-  <ContentRoot BasePath="_content/Syncfusion.Blazor.ProgressBar" Path="C:\Users\apple\.nuget\packages\syncfusion.blazor.progressbar\20.1.0.50\build\..\staticwebassets\" />
-</StaticWebAssets>

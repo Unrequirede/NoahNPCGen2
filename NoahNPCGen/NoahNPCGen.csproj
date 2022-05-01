@@ -9,8 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blazor.ContextMenu" Version="1.13.0" />
-    <PackageReference Include="Kevsoft.PDFtk" Version="0.0.51" />
+    <PackageReference Include="Kevsoft.PDFtk" Version="0.0.56" />
     <PackageReference Include="Microsoft.AspNet.WebApi" Version="5.2.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.3">
@@ -18,12 +17,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="pdftk.exe" Version="1.44.0" />
-    <PackageReference Include="Syncfusion.Blazor" Version="20.1.0.50" />
-    <PackageReference Include="Syncfusion.Blazor.ProgressBar" Version="20.1.0.50" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="PrivateReferences\" />
   </ItemGroup>
 	
 </Project>

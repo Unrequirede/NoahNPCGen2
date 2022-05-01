@@ -4,7 +4,9 @@
     ViewData["Title"] = "Home page";
 }
 
-
+@{
+    LoadAPI load = new LoadAPI();
+}
 
 <div>
     <h1>Noah's 5e Character Generator</h1>
@@ -13,7 +15,6 @@
 
 <!--Dropdowns allowing for user to customize the character genrator utilizing D&D 5e API-->
 <div class="container-fluid bg-light gy-5">
-    <h3>Welcome to your new <Tooltip Text="Blazor is awesome!">app</Tooltip>.</h3>
     <form method="POST">
         <div class="row">
             <div class="col-3 p-3">
@@ -25,7 +26,7 @@
                 <p>Select the character's Race:</p>
                 <select id="SelectRace" name="SelectRace">
                     <option value="Random">Random</option>
-                    @foreach (var race in Model.LoadAPI("races")["results"])
+                    @foreach (var race in load.LoadJObj("races")["results"])
                     {
                         <option value="@race["name"]">@race["name"]</option>
                     }
@@ -36,7 +37,7 @@
                 <p>Select the character's class:</p>
                 <select id="SelectClass" name="SelectClass">
                     <option value="Random">Random</option>
-                    @foreach (var dndClass in Model.LoadAPI("classes")["results"])
+                    @foreach (var dndClass in load.LoadJObj("classes")["results"])
                     {
                         <option option value="@dndClass["name"]">@dndClass["name"]</option>
                     }
@@ -47,7 +48,7 @@
                 <p>Select the character's subclass:</p>
                 <select id="SelectSubClass" name="SelectSubclass">
                     <option value="Random">Random</option>
-                    @foreach (var subClass in Model.LoadAPI("subclasses")["results"])
+                    @foreach (var subClass in load.LoadJObj("subclasses")["results"])
                     {
                         <option value="@subClass["name"]">@subClass["name"]</option>
                     }
@@ -69,7 +70,7 @@
                 <p>Select the Character's background:</p>
                 <select id="SelectBackG" name="SelectBackG">
                     <option value="Random">Random</option>
-                    @foreach (var backG in Model.LoadAPI("backgrounds")["results"])
+                    @foreach (var backG in load.LoadJObj("backgrounds")["results"])
                     {
                         <option value="@backG["name"]">@backG["name"]</option>
                     }
@@ -80,7 +81,7 @@
                 <p>Select the Character's Alignment:</p>
                 <select id="SelectAlignment" name="SelectAlignment">
                     <option value="Random">Random</option>
-                    @foreach (var alignment in Model.LoadAPI("alignments")["results"])
+                    @foreach (var alignment in load.LoadJObj("alignments")["results"])
                     {
                         <option value="@alignment["name"]">@alignment["name"]</option>
                     }
@@ -90,7 +91,4 @@
 
         <input type="submit" id="Submit" value="Create Character" />
     </form>
-    <SfProgressBar Minimum="0" Maximum="100" Value="50"></SfProgressBar>
 </div>
-
-<!--<component>@*(await Html.RenderComponentAsync<Index>(RenderMode.Server))*@</component>-->

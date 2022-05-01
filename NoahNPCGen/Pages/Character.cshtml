@@ -41,7 +41,7 @@
 <form method="POST">
     <div class="row bg-light">
         <div class="col-sm-4">
-            <input class="w-100" id="NameBox" name="NameBox" value="@Model.displayName" />
+            <input class="w-100" id="NameBox" name="NameBox" value="@Model.coreAttr["displayName"]" />
             <div class="row">
                 <label for="NameBox">Character Name</label>
             </div>
@@ -50,7 +50,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="row">
-                        <input id="ClassBox" name="ClassBox" value="@Model.displayClass @Model.displayLevel" />
+                        <input id="ClassBox" name="ClassBox" value="@Model.coreAttr["displayClass"] @Model.displayLevel" />
                     </div>
                     <div>
                         <label for="ClassBox">Class & Level</label>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="row">
-                        <input id="BackGBox" name="BackGBox" value="@Model.displayBackG" />
+                        <input id="BackGBox" name="BackGBox" value="@Model.coreAttr["displayBackG"]" />
                     </div>
                     <div class="row">
                         <label for="BackGBox">Background</label>
@@ -76,7 +76,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="row">
-                        <input id="RaceBox" name="RaceBox" value="@Model.displayRace" />
+                        <input id="RaceBox" name="RaceBox" value="@Model.coreAttr["displayRace"]" />
                     </div>
                     <div class="row">
                         <label for="RaceBox">Race</label>
@@ -84,7 +84,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="row">
-                        <input id="AlignmentBox" name="AlignmentBox" value="@Model.displayAlignment" />
+                        <input id="AlignmentBox" name="AlignmentBox" value="@Model.coreAttr["displayAlignment"]" />
                     </div>
                     <div class="row">
                         <label for="AlignmentBox">Alignment</label>
@@ -109,264 +109,72 @@
                     <div class="border" id="StrSco">
                         <label for="StrSco">Strength</label>
                         <input class="form-control ability" id="StrAbl" name="StrAbl" value="@Model.displayStr" />
-                        <input class="form-control ability-modifier p-1" id="StrMod" name="StrMod" value="@Model.displayStrMod" />
+                        <input class="form-control ability-modifier p-1" id="StrMod" name="StrMod" value="@Model.ablMods.ElementAt(0)" />
                     </div>
                     <div class="border" id="DexSco">
                         <label for="DexSco">Dexterity</label>
                         <input class="form-control ability" id="DexAbl" name="DexAbl" value="@Model.displayDex" />
-                        <input class="form-control ability-modifier p-1" id="DexMod" name="DexMod" value="@Model.displayDexMod" />
+                        <input class="form-control ability-modifier p-1" id="DexMod" name="DexMod" value="@Model.ablMods.ElementAt(1)" />
                     </div>
                     <div class="border" id="ConSco">
                         <label for=" ConSco">Constitution</label>
                         <input class="form-control ability" id="ConAbl" name="ConAbl" value="@Model.displayCon" />
-                        <input class="form-control ability-modifier p-1" id="ConMod" name="ConMod" value="@Model.displayConMod" />
+                        <input class="form-control ability-modifier p-1" id="ConMod" name="ConMod" value="@Model.ablMods.ElementAt(2)" />
                     </div>
                     <div class="border" id="IntSco">
                         <label for=" IntSco">Intelligence</label>
                         <input class="form-control ability" id="IntAbl" name="IntAbl" value="@Model.displayInt" />
-                        <input class="form-control ability-modifier p-1" id="IntMod" name="IntMod" value="@Model.displayIntMod" />
+                        <input class="form-control ability-modifier p-1" id="IntMod" name="IntMod" value="@Model.ablMods.ElementAt(3)" />
                     </div>
                     <div class="border" id="WisSco">
                         <label for=" WisSco">Wisdom</label>
                         <input class="form-control ability" id="WisAbl" name="WisAbl" value="@Model.displayWis" />
-                        <input class="form-control ability-modifier p-1" id="WisMod" name="WisMod" value="@Model.displayWisMod" />
+                        <input class="form-control ability-modifier p-1" id="WisMod" name="WisMod" value="@Model.ablMods.ElementAt(4)" />
                     </div>
                     <div class="border" id="ChaSco">
                         <label for="ChaSco">Charisma</label>
                         <input class="form-control ability" id="ChaAbl" name="ChaAbl" value="@Model.displayCha" />
-                        <input class="form-control ability-modifier p-1" id="ChaMod" name="ChaMod" value="@Model.displayChaMod" />
+                        <input class="form-control ability-modifier p-1" id="ChaMod" name="ChaMod" value="@Model.ablMods.ElementAt(5)" />
                     </div>
                 </div>
                 <div class="col-sm-6 bg-light border">
                     <input class="form-control modifier p-1" id="ProfBonus" name="ProfBonus" value="@Model.displayProf">
                     <label class="modDesc">Proficiency Bonus</label>
                     <div class="border w-100">
+                        @foreach (Checkbox save in Model.saveChecks)
+                        {
                         <div class="row">
                             <div class="col-sm-4 p-0">
-                                <input id="StrSavThr" name="StrSav" type="checkbox" @Model.strSav />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="StrSaveThr" value="@Model.ProfBonus(Model.displayStrMod, "checked")" />
+                                <input id="@save.BoxName" name="@save.BoxName" type="checkbox" checked=@save.Check />
+                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="@save.ModName" value="@Model.ProfBonus(Model.ablMods.ElementAt(save.Ability), save.Check)" />
                             </div>
                             <div class="col-sm-8 p-0">
-                                <label class="modDesc">Strength Saving Throw</label>
+                                <label class="modDesc">@save.LabelName</label>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="DexSavThr" name="DexSav" type="checkbox" @Model.dexSav />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="DexSaveThr" value="@Model.ProfBonus(Model.displayDexMod, Model.dexSav)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Dexterity Saving Throw</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="ConSavThr" name="ConSav" type="checkbox" @Model.conSav />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="ConSaveThr" value="@Model.ProfBonus(Model.displayConMod, Model.conSav)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Constitution Saving Throw</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="IntSavThr" name="IntSav" type="checkbox" @Model.intSav />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="IntSaveThr" value="@Model.ProfBonus(Model.displayIntMod, Model.intSav)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Intelligence Saving Throw</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="WisSavThr" name="WisSav" type="checkbox" @Model.wisSav />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="WisSaveThr" value="@Model.ProfBonus(Model.displayWisMod, Model.wisSav)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Wisdom Saving Throw</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="ChaSavThr" name="ChaSav" type="checkbox" @Model.chaSav />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="ChaSaveThr" value="@Model.ProfBonus(Model.displayChaMod, Model.chaSav)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Charisma Saving Throw</label>
-                            </div>
-                        </div>
+                        }
                         <p style="margin: auto;"><b>Saving Throws</b></p>
                     </div>
                     <div class="border">
+                        @foreach(Checkbox prof in Model.profChecks)
+                        {
                         <div class="row">
                             <div class="col-sm-4 p-0">
-                                <input id="DexAcr" name="DexAcr" type="checkbox" @Model.acroPro />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="DexAcroMod" value="@Model.ProfBonus(Model.displayDexMod, Model.acroPro)" />
+                                <input id="@prof.BoxName" name="@prof.BoxName" type="checkbox" checked=@prof.Check />
+                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="@prof.ModName" value="@Model.ProfBonus(Model.ablMods.ElementAt(prof.Ability), prof.Check)" />
                             </div>
                             <div class="col-sm-8 p-0">
-                                <label class="modDesc">Acrobatics</label>
+                                <label class="modDesc">@prof.LabelName</label>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="WisAni" name="WisAni" type="checkbox" @Model.animPro />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="WisAnimMod" value="@Model.ProfBonus(Model.displayWisMod, Model.animPro)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Animal Handling</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="IntArc" name="IntArc" type="checkbox" @Model.arcaPro />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="IntArcMod" value="@Model.ProfBonus(Model.displayIntMod, Model.arcaPro)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Arcana</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="StrAth" name="StrAth" type="checkbox" @Model.athlPro />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="StrAthMod" value="@Model.ProfBonus(Model.displayStrMod, Model.athlPro)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Athletics</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="ChaDec" name="ChaDec" type="checkbox" @Model.decePro />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" id="ChaDecMod" name="ChaDecMod" value="@Model.ProfBonus(Model.displayChaMod, Model.decePro)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Deception</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="IntHis" name="IntHis" type="checkbox" @Model.histPro />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="IntHisMod" value="@Model.ProfBonus(Model.displayIntMod, Model.histPro)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">History</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="WisIns" name="WisIns" type="checkbox" @Model.insiPro />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="WisInsMod" value="@Model.ProfBonus(Model.displayWisMod, Model.insiPro)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Insight</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="ChaInt" name="ChaInt" type="checkbox" @Model.intiPro />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="ChaIntMod" value="@Model.ProfBonus(Model.displayIntMod, Model.intiPro)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Intimidation</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="IntInv" name="IntInv" type="checkbox" @Model.invePro />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="IntInvMod" value="@Model.ProfBonus(Model.displayIntMod, Model.invePro)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Deception</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="WisMed" name="WisMed" type="checkbox" @Model.mediPro />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="WisMedMod" value="@Model.ProfBonus(Model.displayWisMod, Model.mediPro)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Medicine</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="IntNat" name="IntNat" type="checkbox" @Model.natuPro />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="IntNatMod" value="@Model.ProfBonus(Model.displayIntMod, Model.natuPro)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Nature</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="WisPer" name="WisPer" type="checkbox" @Model.percPro />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="WisPerMod" value="@Model.ProfBonus(Model.displayWisMod, Model.percPro)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Perception</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="ChaPerf" name="ChaPerf" type="checkbox" @Model.perfPro />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="ChaPerfMod" value="@Model.ProfBonus(Model.displayChaMod, Model.perfPro)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Performance</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="ChaPers" name="ChaPers" type="checkbox" @Model.persPro />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="ChaPersMod" value="@Model.ProfBonus(Model.displayChaMod, Model.persPro)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Persuasion</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="IntRel" name="IntRel" type="checkbox" @Model.reliPro />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="IntRelMod" value="@Model.ProfBonus(Model.displayIntMod, Model.reliPro)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Religion</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="DexSle" name="DexSle" type="checkbox" @Model.sleiPro />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="DexSleMod" value="@Model.ProfBonus(Model.displayDexMod, Model.sleiPro)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Sleight of Hand</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="DexSte" name="DexSte" type="checkbox" @Model.steaPro />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="DexSteMod" value="@Model.ProfBonus(Model.displayDexMod, Model.steaPro)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Stealth</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 p-0">
-                                <input id="WisSur" name="WisSur" type="checkbox" @Model.survPro />
-                                <input class="form-control p-1 modifier" maxlength="2" size="2" name="WisSurMod" value="@Model.ProfBonus(Model.displayWisMod, Model.survPro)" />
-                            </div>
-                            <div class="col-sm-8 p-0">
-                                <label class="modDesc">Survival</label>
-                            </div>
-                        </div>
+                        }
                     </div>
                     <p stlye="margin:auto;"><b>Skills</b></p>
                 </div>
             </div>
             <div class="row bg-light">
                 <div class="border p-3" style="margin:auto">
-                    <input class="form-control p-1 modifier" maxlength="2" size="2" name="PassPerc" value="@Model.ProfBonus(Model.displayWisMod, Model.percPro, 10)" />
+                    <input class="form-control p-1 modifier" maxlength="2" size="2" name="PassPerc" value="@Model.ProfBonus(Model.ablMods.ElementAt(3), Model.profChecks.ElementAt(11).Check, 10)" />
                     <label class="modDesc">Passive Wisdom (Perception)</label>
                 </div>
                 <textarea id="OtherProf" rows="4" cols="40" style="margin:auto;" name="OtherProf">@Model.otherPro</textarea>
@@ -384,7 +192,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="border" id="InitSco">
-                        <input class="form-control ability" id="InitSco" name="InitSco" value="@Model.displayDexMod" />
+                        <input class="form-control ability" id="InitSco" name="InitSco" value="@Model.ablMods.ElementAt(1)" />
                         <label for="InitSco">Initiative</label>
                     </div>
                 </div>
