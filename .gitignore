@@ -1,0 +1,6 @@
+*.dll
+**/*.dll
+**/*.exe
+*.exe
+/NoahNPCGen/bin/
+/NoahNPCGen/obj/
