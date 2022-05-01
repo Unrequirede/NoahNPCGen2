@@ -30,6 +30,7 @@ namespace NoahNPCGen.Pages
         public static Generate gen = new Generate();
         public static Proficiencies prof = new Proficiencies();
         public static Items items = new Items();
+        public static Personality pers = new Personality();
         public List<Checkbox> profChecks = ch.AbilityProf();
         public List<Checkbox> saveChecks = ch.SavingThro();
         public List<int> ablMods = new List<int>() { 0, 0, 0, 0, 0, 0 };
@@ -48,7 +49,7 @@ namespace NoahNPCGen.Pages
             GetLevelInfo();
             items.GetEquipment(coreAttr, bgObject, ref itemSelect);
             items.GetCombat(itemSelect, otherProf, displayProf, coreAttr, displayLevel, ablMods, ref attackList, ref displayAC, ref displaySpeed, displayStr);
-            GetPersonality();
+            pers.GetPersonality(bgObject, coreAttr, ref persTrait, ref persIdeal, ref persBonds, ref persFlaws);
             otherPro = prof.GetOtherProf(otherProf);
             
         }
@@ -184,54 +185,6 @@ namespace NoahNPCGen.Pages
         public string ReplaceIllegal(string input)
         {
             return Regex.Replace(input, @"[^0-9a-zA-Z]+", "");
-        }
-
-        //Generates personality traits based on background and alignment
-        private void GetPersonality()
-        {
-            dynamic backGround = bgObject;
-            List<string> pTraits = new List<string>();
-            foreach(dynamic persTrait in backGround["personality_traits"]["from"])
-                pTraits.Add(persTrait.ToString());
-            for (int i = 0; i < (int)backGround["personality_traits"]["choose"]; i++)
-            {
-                int ranNum = quantumQueue.Dequeue() % pTraits.Count;
-                persTrait += pTraits.ElementAt(ranNum) + "\n";
-                pTraits.RemoveAt(ranNum);
-            }
-            pTraits.Clear();
-            foreach(dynamic idealTrait in backGround["ideals"]["from"])
-            {
-                foreach(dynamic idealAlign in idealTrait["alignments"])
-                {
-                    if (idealAlign["name"].ToString() == coreAttr["displayAlignment"])
-                        pTraits.Add(idealTrait["desc"].ToString());
-                }
-            }
-            for (int i = 0; i < (int)backGround["ideals"]["choose"]; i++)
-            {
-                int ranNum = quantumQueue.Dequeue() % pTraits.Count;
-                persIdeal += pTraits.ElementAt(ranNum) + "\n";
-                pTraits.RemoveAt(ranNum);
-            }
-            pTraits.Clear();
-            foreach (dynamic bondTrait in backGround["bonds"]["from"])
-                pTraits.Add(bondTrait.ToString());
-            for (int i = 0; i < (int)backGround["bonds"]["choose"]; i++)
-            {
-                int ranNum = quantumQueue.Dequeue() % pTraits.Count;
-                persBonds += pTraits.ElementAt(ranNum) + "\n";
-                pTraits.RemoveAt(ranNum);
-            }
-            pTraits.Clear();
-            foreach (dynamic flawTrait in backGround["flaws"]["from"])
-                pTraits.Add(flawTrait.ToString());
-            for (int i = 0; i < (int)backGround["flaws"]["choose"]; i++)
-            {
-                int ranNum = quantumQueue.Dequeue() % pTraits.Count;
-                persFlaws += pTraits.ElementAt(ranNum) + "\n";
-                pTraits.RemoveAt(ranNum);
-            }
         }
 
         //prints items into equipment box
