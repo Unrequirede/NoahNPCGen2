@@ -28,6 +28,7 @@ namespace NoahNPCGen.Pages
         public static Checkbox ch = new Checkbox();
         public static LoadAPI load = new LoadAPI();
         public static Generate gr = new Generate();
+        public static Proficiencies prof = new Proficiencies();
         public List<Checkbox> profChecks = ch.AbilityProf();
         public List<Checkbox> saveChecks = ch.SavingThro();
         public List<int> ablMods;
@@ -53,7 +54,7 @@ namespace NoahNPCGen.Pages
             gr.RandomAttr(ref coreAttr, ref displayLevel, ref classObject, ref mcObject, ref scObject, ref scfObject, ref bgObject);
             displayHitDice = (int)classObject["hit_die"];
             gr.GetStats(ref coreAttr, mcObject, classObject, ref displayStr, ref displayDex, ref displayCon, ref displayInt, ref displayWis, ref displayCha);
-            GetProf();
+            prof.GetProf(classObject, bgObject, ref saveChecks, ref profChecks, ref otherProf);
             GetRaceInfo();
             ablMods = new List<int> {};
             GetAblMod();
@@ -61,7 +62,7 @@ namespace NoahNPCGen.Pages
             GetEquipment();
             GetCombat();
             GetPersonality();
-            otherPro = GetOtherProf();
+            otherPro = prof.GetOtherProf(otherProf);
             
         }
 
@@ -690,73 +691,6 @@ namespace NoahNPCGen.Pages
                     break;
             }
             return false;
-        }
-
-        //checks API for a class's saving throws and proficiencies, making the ones that are, "checked" for input box
-        private void GetProf()
-        {
-            dynamic savThr = classObject["saving_throws"];
-            saveChecks.ElementAt(0).Check = ("str" == savThr[0]["index"].ToString() || "str" == savThr[1]["index"].ToString());
-            saveChecks.ElementAt(1).Check = ("dex" == savThr[0]["index"].ToString() || "dex" == savThr[1]["index"].ToString());
-            saveChecks.ElementAt(2).Check = ("con" == savThr[0]["index"].ToString() || "con" == savThr[1]["index"].ToString());
-            saveChecks.ElementAt(3).Check = ("int" == savThr[0]["index"].ToString() || "int" == savThr[1]["index"].ToString());
-            saveChecks.ElementAt(4).Check = ("wis" == savThr[0]["index"].ToString() || "wis" == savThr[1]["index"].ToString());
-            saveChecks.ElementAt(5).Check = ("cha" == savThr[0]["index"].ToString() || "cha" == savThr[1]["index"].ToString());
-
-            var profSele = new List<string>();
-            //check if object begins with "skill-" string as the API sorts proficiencies inconsistently
-            dynamic correctProf = null;
-            foreach (dynamic profPoss in classObject["proficiency_choices"])
-            {
-                if (profPoss["from"][0]["index"].ToString().Substring(0, 6) == "skill-")
-                    correctProf = profPoss;
-            }
-
-            //adds each proficiency choice from class to list
-            foreach (var profChoice in correctProf["from"])
-                profSele.Add(profChoice["index"].ToString());
-
-            //randomly assigns skill proficiencies as they are usually user prefereence
-            for (int i = 0; i < (int)correctProf["choose"]; i++)
-            {
-                string chosenProf = profSele.ElementAt(quantumQueue.Dequeue() % profSele.Count);
-                AddProficiency(chosenProf);
-            }
-
-            foreach (var prof in bgObject["starting_proficiencies"])
-                AddProficiency(prof["index"].ToString());
-
-            profSele = new List<string>();
-            //check if object begins with "skill-" string as the API sorts proficiencies inconsistently
-            correctProf = null;
-            foreach (dynamic profPoss in classObject["proficiency_choices"])
-            {
-                if (profPoss["from"][0]["index"].ToString().Substring(0, 6) != "skill-")
-                {
-                    correctProf = profPoss;
-                    foreach (var profChoice in correctProf["from"])
-                        profSele.Add(profChoice["name"].ToString());
-                    //randomly assigns tool and instrument proficiencies as they are usually user prefereence
-                    for (int i = 0; i < (int)correctProf["choose"]; i++)
-                    {
-                        otherProf.Add(profSele.ElementAt(quantumQueue.Dequeue() % profSele.Count));
-                    }
-                }
-            }
-
-            //adds weapon proficiency as well
-            foreach (dynamic weapProf in classObject["proficiencies"])
-            {
-                otherProf.Add(weapProf["name"].ToString());
-            }
-        }
-
-        public string GetOtherProf()
-        {
-            string result = "";
-            foreach (string prof in otherProf)
-                result += prof + ", ";
-            return result.Substring(0, result.Length-2);
         }
 
         //gets the bonus of a skill the character has proficiency in
