@@ -9,12 +9,12 @@
 }
 
 <div>
-    <h1>Noah's 5e Character Generator</h1>
+    <h1>D&D 5e Character Generator</h1>
     <p class="lead">Choose the type of person you want, and we'll give them to you!</p>
 </div>
 
 <!--Dropdowns allowing for user to customize the character genrator utilizing D&D 5e API-->
-<div class="container-fluid bg-light gy-5">
+<div class="container-fluid bg-light py-3">
     <form method="POST">
         <div class="row">
             <div class="col-3 p-3">
@@ -92,3 +92,26 @@
         <input type="submit" id="Submit" value="Create Character" />
     </form>
 </div>
+
+<div class="my-2" />
+
+<div id="disqus_thread bg-dark"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://d-d-5e-character-generator.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<!--<div class="sharethis-inline-share-buttons"></div>-->

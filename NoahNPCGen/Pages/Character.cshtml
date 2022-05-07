@@ -282,7 +282,6 @@
                 }
                 @if (Model.attackList.Count >= 3)
                 {
-                    Console.WriteLine(Model.attackList.ElementAt(2));
                     <input type="hidden" name="Atk3Nam" value="@Model.attackList.ElementAt(2)[0]" />
                     <input type="hidden" name="Atk3Bon" value="@Model.attackList.ElementAt(2)[1]" />
                     <input type="hidden" name="Atk3Dam" value="@Model.attackList.ElementAt(2)[2]" />
@@ -310,17 +309,20 @@
             </div>
             <div class="border">
                 <div class="list-group list-group-flush">
+                    @{string allFeatures = "";}
                     @foreach (string[] ft in Model.featuresTraits)
                     {
                         <button type=button data-toggle="modal" data-target="#@Model.ReplaceIllegal(ft[0])" class="list-group-item list-group-item-action btn py-1">@ft[0]</button>
+                        allFeatures += ft[0] + "\n";
                     }
+                        <input type="hidden" name="Features" value="@allFeatures" />
                 </div>
                     <b>Features and Traits</b>
             </div>
         </div>
     </div>
 
-    <button type="submit" id="Submit" hidden>Export to PDF</button>
+    <button type="submit" id="Submit">Export to PDF</button>
 </form>
 
 @foreach (string[] ft in Model.featuresTraits)

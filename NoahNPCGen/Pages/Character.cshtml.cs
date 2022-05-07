@@ -10,6 +10,11 @@ using System.IO;
 using Newtonsoft.Json.Linq;
 using Kevsoft.PDFtk;
 using System.Text.RegularExpressions;
+using PdfSharp;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using PdfSharp.Pdf.IO;
+using PdfSharp.Pdf.AcroForms;
 
 namespace NoahNPCGen.Pages
 {
@@ -57,8 +62,8 @@ namespace NoahNPCGen.Pages
 
         public async Task<IActionResult> OnPost(string nameBox, string classBox, string backGBox, string playerBox, string raceBox, string alignmentBox, string experienceBox,
             string strAbl, string strMod, string strSav, string dexAbl, string dexMod, string dexSav, string conAbl, string conMod, string conSav, string intAbl, string intMod,
-            string intSav, string wisAbl, string wisMod, string wisSav, string chaAbl, string chaMod, string chaSav, string profBonus, string strSaveThr, string dexSaveThr,
-            string conSaveThr, string intSaveThr, string wisSaveThr, string chaSaveThr, string dexAcroMod, string wisAnimMod, string intArcMod, string strAthMod, string chaDecMod,
+            string intSav, string wisAbl, string wisMod, string wisSav, string chaAbl, string chaMod, string chaSav, string profBonus, string strSavThr, string dexSavThr,
+            string conSavThr, string intSavThr, string wisSavThr, string chaSavThr, string dexAcrMod, string wisAniMod, string intArcMod, string strAthMod, string chaDecMod,
             string intHisMod, string wisInsMod, string chaIntMod, string intInvMod, string wisMedMod, string intNatMod, string wisPerMod, string chaPerfMod, string chaPersMod,
             string intRelMod, string dexSleMod, string dexSteMod, string wisSurMod, string passPerc, string otherProf, string acSco, string initSco, string speedSco, string maxHP,
             string currHP, string tempHP, string dieLevel, string hitDie, string dsSucc1, string dsSucc2, string dsSucc3, string dsFail1, string dsFail2, string dsFail3, string atk1Nam,
@@ -67,119 +72,121 @@ namespace NoahNPCGen.Pages
             string wisIns, string chaInt, string intInv, string wisMed, string intNat, string wisPer, string chaPerf, string chaPers, string intRel, string dexSle, string dexSte,
             string wisSur)
         {
-            var pdftk = new PDFtk();
 
-            var pdfFile = await System.IO.File.ReadAllBytesAsync("CharacterSheet-FormFillable.pdf");
+            AddPDF add = new AddPDF();
+            // Open the file
+            PdfDocument document = PdfReader.Open("CharacterSheet-FormFillable.pdf", PdfDocumentOpenMode.Modify);
 
-            var fieldData = new Dictionary<string, string>()
+            add.AddElem(ref document, "CharacterName", nameBox);
+            add.AddElem(ref document, "PlayerName", playerBox);
+            add.AddElem(ref document, "ClassLevel", classBox);
+            add.AddElem(ref document, "Race ", raceBox);
+            add.AddElem(ref document, "ClassLevel", classBox);
+            add.AddElem(ref document, "Alignment", alignmentBox);
+            add.AddElem(ref document, "XP", experienceBox);
+            add.AddElem(ref document, "Background", backGBox);
+            add.AddElem(ref document, "STR", strAbl);
+            add.AddElem(ref document, "STRmod", strMod);
+            add.AddElem(ref document, "DEX", dexAbl);
+            add.AddElem(ref document, "DEXmod ", dexMod);
+            add.AddElem(ref document, "CON", conAbl);
+            add.AddElem(ref document, "CONmod", conMod);
+            add.AddElem(ref document, "INT", intAbl);
+            add.AddElem(ref document, "INTmod", intMod);
+            add.AddElem(ref document, "WIS", wisAbl);
+            add.AddElem(ref document, "WISmod", wisMod);
+            add.AddElem(ref document, "CHA", chaAbl);
+            add.AddElem(ref document, "CHamod", chaMod);
+            add.AddElem(ref document, "ProfBonus", profBonus);
+            add.AddElem(ref document, "ST Strength", strSavThr);
+            add.AddElem(ref document, "ST Dexterity", dexSavThr);
+            add.AddElem(ref document, "ST Constitution", conSavThr);
+            add.AddElem(ref document, "ST Intelligence", intSavThr);
+            add.AddElem(ref document, "ST Wisdom", wisSavThr);
+            add.AddElem(ref document, "ST Charisma", chaSavThr);
+            add.AddElem(ref document, "Check Box 11", strSav == "on"); //str saving throw check
+            add.AddElem(ref document, "Check Box 12", dsSucc1 == "on"); //death save success 1
+            add.AddElem(ref document, "Check Box 13", dsSucc2 == "on"); //death save success 2
+            add.AddElem(ref document, "Check Box 14", dsSucc3 == "on"); //death save success 3
+            add.AddElem(ref document, "Check Box 15", dsFail1 == "on"); //death save fail 1
+            add.AddElem(ref document, "Check Box 16", dsFail2 == "on"); //death save fail 2
+            add.AddElem(ref document, "Check Box 17", dsFail3 == "on"); //death save fail 3
+            add.AddElem(ref document, "Check Box 18", dexSav == "on"); //dex saving throw check
+            add.AddElem(ref document, "Check Box 19", conSav == "on"); //con saving throw check
+            add.AddElem(ref document, "Check Box 20", intSav == "on"); //int saving throw check
+            add.AddElem(ref document, "Check Box 21", wisSav == "on"); //wis saving throw check
+            add.AddElem(ref document, "Check Box 22", chaSav == "on"); //cha saving throw check
+            add.AddElem(ref document, "Check Box 23", dexAcr == "on"); //acrobatics check
+            add.AddElem(ref document, "Check Box 24", wisAni == "on"); //animal handling check
+            add.AddElem(ref document, "Check Box 25", intArc == "on"); //arcana check
+            add.AddElem(ref document, "Check Box 26", strAth == "on"); //athletics check
+            add.AddElem(ref document, "Check Box 27", chaDec == "on"); //deception check
+            add.AddElem(ref document, "Check Box 28", intHis == "on"); //history check
+            add.AddElem(ref document, "Check Box 29", wisIns == "on"); //insight check
+            add.AddElem(ref document, "Check Box 30", chaInt == "on"); //intimidation check
+            add.AddElem(ref document, "Check Box 31", intInv == "on"); //investigation check
+            add.AddElem(ref document, "Check Box 32", wisMed == "on"); //medicine check
+            add.AddElem(ref document, "Check Box 33", intNat == "on"); //nature check
+            add.AddElem(ref document, "Check Box 34", wisPer == "on"); //perception check
+            add.AddElem(ref document, "Check Box 35", chaPerf == "on"); //performance check
+            add.AddElem(ref document, "Check Box 36", chaPers == "on"); //persuasion check
+            add.AddElem(ref document, "Check Box 37", intRel == "on"); //religion check
+            add.AddElem(ref document, "Check Box 38", dexSle == "on"); //sleight of hand check
+            add.AddElem(ref document, "Check Box 39", dexSte == "on"); //stealth check
+            add.AddElem(ref document, "Check Box 40", wisSur == "on"); //survival check
+            add.AddElem(ref document, "Acrobatics", dexAcrMod);
+            add.AddElem(ref document, "Animal", wisAniMod);
+            add.AddElem(ref document, "Arcana", intArcMod);
+            add.AddElem(ref document, "Athletics", strAthMod);
+            add.AddElem(ref document, "Deception ", chaDecMod);
+            add.AddElem(ref document, "History ", intHisMod);
+            add.AddElem(ref document, "Insight", wisInsMod);
+            add.AddElem(ref document, "Intimidation", chaIntMod);
+            add.AddElem(ref document, "Investigation ", intInvMod);
+            add.AddElem(ref document, "Medicine", wisMedMod);
+            add.AddElem(ref document, "Nature", intNatMod);
+            add.AddElem(ref document, "Perception ", wisPerMod);
+            add.AddElem(ref document, "Performance", chaPerfMod);
+            add.AddElem(ref document, "Persuasion", chaPersMod);
+            add.AddElem(ref document, "Religion", intRelMod);
+            add.AddElem(ref document, "SleightofHand", dexSleMod);
+            add.AddElem(ref document, "Stealth ", dexSteMod);
+            add.AddElem(ref document, "Survival", wisSurMod);
+            add.AddElem(ref document, "Passive", passPerc);
+            add.AddElem(ref document, "ProficienciesLang", otherProf);
+            add.AddElem(ref document, "AC", acSco);
+            add.AddElem(ref document, "Initiative", initSco);
+            add.AddElem(ref document, "Speed", speedSco);
+            add.AddElem(ref document, "HPMax", maxHP);
+            add.AddElem(ref document, "HPCurrent", currHP);
+            add.AddElem(ref document, "HPTemp", tempHP);
+            add.AddElem(ref document, "HDTotal", dieLevel);
+            add.AddElem(ref document, "HD", hitDie);
+            add.AddElem(ref document, "Wpn Name", atk1Nam);
+            add.AddElem(ref document, "Wpn1 AtkBonus", atk1Bon);
+            add.AddElem(ref document, "Wpn1 Damage", atk1Dam);
+            add.AddElem(ref document, "Wpn Name 2", atk2Nam);
+            add.AddElem(ref document, "Wpn2 AtkBonus ", atk2Bon);
+            add.AddElem(ref document, "Wpn2 Damage ", atk2Dam);
+            add.AddElem(ref document, "Wpn Name 3", atk3Nam);
+            add.AddElem(ref document, "Wpn3 AtkBonus  ", atk3Bon);
+            add.AddElem(ref document, "Wpn3 Damage ", atk3Dam);
+            add.AddElem(ref document, "Equipment", allEquipment);
+            add.AddElem(ref document, "PersonalityTraits ", persTrait);
+            add.AddElem(ref document, "Ideals", idealTrait);
+            add.AddElem(ref document, "Bonds", bondTrait);
+            add.AddElem(ref document, "Flaws", flawTrait);
+            add.AddElem(ref document, "Features and Traits", features);
+
+            using (MemoryStream stream = new MemoryStream())
             {
-                ["CharacterName"] = nameBox,
-                ["ClassLevel"] = classBox,
-                ["PlayerName"] = playerBox,
-                ["Race "] = raceBox,
-                ["Alignment"] = alignmentBox,
-                ["XP"] = experienceBox,
-                ["Background"] = backGBox,
-                ["STR"] = strAbl,
-                ["STRmod"] = strMod,
-                ["DEX"] = dexAbl,
-                ["DEXmod "] = dexMod,
-                ["CON"] = conAbl,
-                ["CONmod"] = conMod,
-                ["INT"] = intAbl,
-                ["INTmod"] = intMod,
-                ["WIS"] = wisAbl,
-                ["WISmod"] = wisMod,
-                ["CHA"] = chaAbl,
-                ["CHamod"] = chaMod,
-                ["ProfBonus"] = profBonus,
-                ["ST Strength"] = strSaveThr,
-                ["ST Dexterity"] = dexSaveThr,
-                ["ST Constitution"] = conSaveThr,
-                ["ST Intelligence"] = intSaveThr,
-                ["ST Wisdom"] = wisSaveThr,
-                ["ST Charisma"] = chaSaveThr,
-                ["Check Box 11"] = (strSav == "on") ? "Yes" : "Off", //str saving throw check
-                ["Check Box 12"] = (dsSucc1 == "on") ? "Yes" : "Off", //death save success 1
-                ["Check Box 13"] = (dsSucc2 == "on") ? "Yes" : "Off", //death save success 2
-                ["Check Box 14"] = (dsSucc3 == "on") ? "Yes" : "Off", //death save success 3
-                ["Check Box 15"] = (dsFail1 == "on") ? "Yes" : "Off", //death save fail 1
-                ["Check Box 16"] = (dsFail2 == "on") ? "Yes" : "Off", //death save fail 2
-                ["Check Box 17"] = (dsFail3 == "on") ? "Yes" : "Off", //death save fail 3
-                ["Check Box 18"] = (dexSav == "on") ? "Yes" : "Off", //dex saving throw check
-                ["Check Box 19"] = (conSav == "on") ? "Yes" : "Off", //con saving throw check
-                ["Check Box 20"] = (intSav == "on") ? "Yes" : "Off", //int saving throw check
-                ["Check Box 21"] = (wisSav == "on") ? "Yes" : "Off", //wis saving throw check
-                ["Check Box 22"] = (chaSav == "on") ? "Yes" : "Off", //cha saving throw check
-                ["Check Box 23"] = (dexAcr == "on") ? "Yes" : "off", //acrobatics check
-                ["Check Box 24"] = (wisAni == "on") ? "Yes" : "off", //animal handling check
-                ["Check Box 25"] = (intArc == "on") ? "Yes" : "off", //arcana check
-                ["Check Box 26"] = (strAth == "on") ? "Yes" : "off", //athletics check
-                ["Check Box 27"] = (chaDec == "on") ? "Yes" : "off", //deception check
-                ["Check Box 28"] = (intHis == "on") ? "Yes" : "off", //history check
-                ["Check Box 29"] = (wisIns == "on") ? "Yes" : "off", //insight check
-                ["Check Box 30"] = (chaInt == "on") ? "Yes" : "off", //intimidation check
-                ["Check Box 31"] = (intInv == "on") ? "Yes" : "off", //investigation check
-                ["Check Box 32"] = (wisMed == "on") ? "Yes" : "off", //medicine check
-                ["Check Box 33"] = (intNat == "on") ? "Yes" : "off", //nature check
-                ["Check Box 34"] = (wisPer == "on") ? "Yes" : "off", //perception check
-                ["Check Box 35"] = (chaPerf == "on") ? "Yes" : "off", //performance check
-                ["Check Box 36"] = (chaPers == "on") ? "Yes" : "off", //persuasion check
-                ["Check Box 37"] = (intRel == "on") ? "Yes" : "off", //religion check
-                ["Check Box 38"] = (dexSle == "on") ? "Yes" : "off", //sleight of hand check
-                ["Check Box 39"] = (dexSte == "on") ? "Yes" : "off", //stealth check
-                ["Check Box 40"] = (wisSur == "on") ? "Yes" : "off", //survival check
-                ["Acrobatics"] =  dexAcroMod,
-                ["Animal"] = wisAnimMod,
-                ["Arcana"] = intArcMod,
-                ["Athletics"] = strAthMod,
-                ["Deception "] = chaDecMod,
-                ["History "] = intHisMod,
-                ["Insight"] = wisInsMod,
-                ["Intimidation"] = chaIntMod,
-                ["Investigation "] = intInvMod,
-                ["Medicine"] = wisMedMod,
-                ["Nature"] = intNatMod,
-                ["Perception "] = wisPerMod,
-                ["Performance"] = chaPerfMod,
-                ["Persuasion"] = chaPersMod,
-                ["Religion"] = intRelMod,
-                ["SleightofHand"] = dexSleMod,
-                ["Stealth "] = dexSteMod,
-                ["Survival"] = wisSurMod,
-                ["Passive"] = passPerc,
-                ["ProficienciesLang"] = otherProf,
-                ["AC"] = acSco,
-                ["Initiative"] = initSco,
-                ["Speed"] = speedSco,
-                ["HPMax"] = maxHP,
-                ["HPCurrent"] = currHP,
-                ["HPTemp"] = tempHP,
-                ["HDTotal"] = dieLevel,
-                ["HD"] = hitDie,
-                ["Wpn Name"] = atk1Nam,
-                ["Wpn1 AtkBonus"] = atk1Bon,
-                ["Wpn1 Damage"] = atk1Dam,
-                ["Wpn Name 2"] = atk2Nam,
-                ["Wpn2 AtkBonus "] = atk2Bon,
-                ["Wpn2 Damage "] = atk2Dam,
-                ["Wpn Name 3"] = atk3Nam,
-                ["Wpn3 AtkBonus  "] = atk3Bon,
-                ["Wpn3 Damage "] = atk3Dam,
-                ["Equipment"] = allEquipment,
-                ["PersonalityTraits "] = persTrait,
-                ["Ideals"] = idealTrait,
-                ["Bonds"] = bondTrait,
-                ["Flaws"] = flawTrait,
-                ["Features and Traits"] = features
-            };
+                document.Save(stream, true);
 
-            var result = await pdftk.FillFormAsync(pdfFile, fieldData, false, false);
-
-            if (!result.Success)
-                throw new Exception($"Oops: {result.StandardError}");
-
-            return File(result.Result, "application/pdf", $"{nameBox}.pdf");
+                if (nameBox != "" && nameBox != null)
+                    return File(stream.ToArray(), "application/pdf", $"{nameBox}.pdf");
+                else
+                    return File(stream.ToArray(), "application/pdf", $"Unnamed Character.pdf");
+            }
         }
 
         public string ReplaceIllegal(string input)

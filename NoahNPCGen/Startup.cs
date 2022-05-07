@@ -16,6 +16,7 @@ namespace NoahNPCGen
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         }
 
         public IConfiguration Configuration { get; }
@@ -25,7 +26,6 @@ namespace NoahNPCGen
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            //services.AddBlazorContextMenu();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

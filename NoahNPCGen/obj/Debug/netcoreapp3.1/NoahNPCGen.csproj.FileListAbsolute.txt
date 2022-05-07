@@ -163,3 +163,10 @@ C:\Users\apple\source\repos\NoahNPCGen2\NoahNPCGen\obj\Debug\netcoreapp3.1\Razor
 C:\Users\apple\source\repos\NoahNPCGen2\NoahNPCGen\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\_imports.razor.g.cs
 C:\Users\apple\source\repos\NoahNPCGen2\NoahNPCGen\obj\Debug\netcoreapp3.1\Razor\Pages\_imports.razor.g.cs
 C:\Users\apple\source\repos\NoahNPCGen2\NoahNPCGen\obj\Debug\netcoreapp3.1\Razor\Pages\About.cshtml.g.cs
+C:\Users\apple\source\repos\NoahNPCGen2\NoahNPCGen\bin\Debug\netcoreapp3.1\PdfSharp.Charting.dll
+C:\Users\apple\source\repos\NoahNPCGen2\NoahNPCGen\bin\Debug\netcoreapp3.1\PdfSharp.dll
+C:\Users\apple\source\repos\NoahNPCGen2\NoahNPCGen\bin\Debug\netcoreapp3.1\de\PdfSharp.Charting.resources.dll
+C:\Users\apple\source\repos\NoahNPCGen2\NoahNPCGen\bin\Debug\netcoreapp3.1\de\PdfSharp.resources.dll
+C:\Users\apple\source\repos\NoahNPCGen2\NoahNPCGen\bin\Debug\netcoreapp3.1\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\apple\source\repos\NoahNPCGen2\NoahNPCGen\bin\Debug\netcoreapp3.1\System.Text.Encoding.CodePages.dll
+C:\Users\apple\source\repos\NoahNPCGen2\NoahNPCGen\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.1\System.Text.Encoding.CodePages.dll
