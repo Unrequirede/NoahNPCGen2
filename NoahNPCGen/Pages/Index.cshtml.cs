@@ -20,6 +20,7 @@ namespace NoahNPCGen.Pages
         {
             _logger = logger;
         }
+
         public IActionResult OnPost(string selectName, string selectRace, string selectClass, string selectSubclass, int selectLevel, string selectBackG, string selectAlignment)
         {
             return RedirectToPage("Character", "SingleOrder", new { charName = selectName, charRace = selectRace, charClass = selectClass, charSubClass = selectSubclass, charLevel = selectLevel, charBackG = selectBackG, charAlignment = selectAlignment });
